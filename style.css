@@ -282,7 +282,7 @@ img {
 }
 
 .hero-heading {
-  margin-bottom: 40px;
+  margin-bottom: 24px;
 }
 
 .hero-line-dark,
@@ -344,6 +344,35 @@ img {
 
 .hero-cycle-word.exiting {
   animation: cycleWordOut 0.32s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.hero-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 14px;
+  margin-bottom: 32px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  color: #4a4843;
+}
+
+.hero-metric {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  white-space: nowrap;
+}
+
+.hero-metric::after {
+  content: '\00B7';
+  color: #b0aca5;
+}
+
+.hero-metric:last-child::after {
+  content: none;
 }
 
 .hero-ctas {
@@ -411,49 +440,13 @@ img {
 .embedded-bar {
   background: #fafafa;
   border-bottom: 1px solid #f0f0f0;
-  padding: 18px 0;
+  padding: 10px 0;
 }
 
-/* Metrics stack above the logo row: too wide to sit beside them. */
 .embedded-bar-inner {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-.metrics {
-  display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 0 16px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-  color: #6f6c66;
-}
-
-.metric {
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-  white-space: nowrap;
-}
-
-/* The value carries the scan; the label stays quiet behind it. */
-.metric strong {
-  font-weight: 600;
-  color: #1a1917;
-}
-
-.metric::after {
-  content: '\00B7';
-  color: #b0aca5;
-}
-
-.metric:last-child::after {
-  content: none;
+  gap: 28px;
 }
 
 .embedded-label {
@@ -1337,18 +1330,19 @@ img {
   }
 
   .hero-heading {
-    margin-bottom: 28px;
+    margin-bottom: 20px;
   }
 
-  .metrics {
-    font-size: 14px;
-    line-height: 21px;
+  .hero-metrics {
+    font-size: 12px;
+    line-height: 18px;
     gap: 2px 18px;
+    margin-bottom: 24px;
   }
 
   /* Wrapping puts a separator at the end of a line, which reads as a
      stray mark. Spacing alone carries the grouping at this width. */
-  .metric::after {
+  .hero-metric::after {
     content: none;
   }
 
@@ -1376,13 +1370,11 @@ img {
 
   /* Embedded logos — hide label, single row */
   .embedded-bar {
-    padding: 16px 0;
+    padding: 12px 0;
   }
 
-  /* Stretch so the logo row can keep centring itself inside the column. */
   .embedded-bar-inner {
-    align-items: stretch;
-    gap: 12px;
+    justify-content: center;
   }
 
   .embedded-label {
@@ -1676,9 +1668,8 @@ img {
 [data-theme="dark"] .hero-for { color: #f0efe9; }
 [data-theme="dark"] .hero-cycle-word { color: #6b6762; }
 [data-theme="dark"] .hero-vibe { color: #6b6762; }
-[data-theme="dark"] .metrics { color: #9c9994; }
-[data-theme="dark"] .metric strong { color: #f0efe9; }
-[data-theme="dark"] .metric::after { color: #6b6762; }
+[data-theme="dark"] .hero-metrics { color: #9c9994; }
+[data-theme="dark"] .hero-metric::after { color: #6b6762; }
 [data-theme="dark"] .btn-primary {
   background: #f0efe9;
   color: #111110;
