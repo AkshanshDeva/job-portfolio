@@ -282,7 +282,7 @@ img {
 }
 
 .hero-heading {
-  margin-bottom: 24px;
+  margin-bottom: 40px;
 }
 
 .hero-line-dark,
@@ -351,7 +351,6 @@ img {
   flex-wrap: wrap;
   align-items: center;
   gap: 4px 0;
-  margin-bottom: 32px;
   font-family: 'DM Sans', sans-serif;
   font-size: 15px;
   font-weight: 400;
@@ -389,6 +388,7 @@ img {
   color: #807d78;
   letter-spacing: 0.2px;
   line-height: 17px;
+  margin-bottom: 28px;
 }
 
 .btn-primary {
@@ -1330,14 +1330,17 @@ img {
   }
 
   .hero-heading {
-    margin-bottom: 20px;
+    margin-bottom: 28px;
+  }
+
+  .hero-vibe {
+    margin-bottom: 22px;
   }
 
   .hero-metrics {
     font-size: 14px;
     line-height: 21px;
     gap: 6px 16px;
-    margin-bottom: 24px;
   }
 
   /* A wrapped line would otherwise open with a rule hanging off its left
