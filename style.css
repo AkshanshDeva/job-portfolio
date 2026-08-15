@@ -282,7 +282,7 @@ img {
 }
 
 .hero-heading {
-  margin-bottom: 40px;
+  margin-bottom: 24px;
 }
 
 .hero-line-dark,
@@ -344,6 +344,35 @@ img {
 
 .hero-cycle-word.exiting {
   animation: cycleWordOut 0.32s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.hero-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 14px;
+  margin-bottom: 32px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  color: #4a4843;
+}
+
+.hero-metric {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  white-space: nowrap;
+}
+
+.hero-metric::after {
+  content: '\00B7';
+  color: #b0aca5;
+}
+
+.hero-metric:last-child::after {
+  content: none;
 }
 
 .hero-ctas {
@@ -1301,7 +1330,20 @@ img {
   }
 
   .hero-heading {
-    margin-bottom: 28px;
+    margin-bottom: 20px;
+  }
+
+  .hero-metrics {
+    font-size: 12px;
+    line-height: 18px;
+    gap: 2px 18px;
+    margin-bottom: 24px;
+  }
+
+  /* Wrapping puts a separator at the end of a line, which reads as a
+     stray mark. Spacing alone carries the grouping at this width. */
+  .hero-metric::after {
+    content: none;
   }
 
   .hero-line-dark,
@@ -1626,6 +1668,8 @@ img {
 [data-theme="dark"] .hero-for { color: #f0efe9; }
 [data-theme="dark"] .hero-cycle-word { color: #6b6762; }
 [data-theme="dark"] .hero-vibe { color: #6b6762; }
+[data-theme="dark"] .hero-metrics { color: #9c9994; }
+[data-theme="dark"] .hero-metric::after { color: #6b6762; }
 [data-theme="dark"] .btn-primary {
   background: #f0efe9;
   color: #111110;
