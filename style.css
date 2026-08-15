@@ -350,20 +350,26 @@ img {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0 14px;
+  gap: 0 16px;
   margin-bottom: 32px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 400;
-  line-height: 19.5px;
-  color: #4a4843;
+  line-height: 24px;
+  color: #6f6c66;
 }
 
 .hero-metric {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   white-space: nowrap;
+}
+
+/* The value carries the scan; the label stays quiet behind it. */
+.hero-metric strong {
+  font-weight: 600;
+  color: #1a1917;
 }
 
 .hero-metric::after {
@@ -1334,8 +1340,8 @@ img {
   }
 
   .hero-metrics {
-    font-size: 12px;
-    line-height: 18px;
+    font-size: 14px;
+    line-height: 21px;
     gap: 2px 18px;
     margin-bottom: 24px;
   }
@@ -1669,6 +1675,7 @@ img {
 [data-theme="dark"] .hero-cycle-word { color: #6b6762; }
 [data-theme="dark"] .hero-vibe { color: #6b6762; }
 [data-theme="dark"] .hero-metrics { color: #9c9994; }
+[data-theme="dark"] .hero-metric strong { color: #f0efe9; }
 [data-theme="dark"] .hero-metric::after { color: #6b6762; }
 [data-theme="dark"] .btn-primary {
   background: #f0efe9;
