@@ -3,9 +3,13 @@
   "configurations": [
     {
       "name": "portfolio",
-      "runtimeExecutable": "/Users/akshanshdeva/Desktop/Claude/job-portfolio/node_modules/.bin/http-server",
-      "runtimeArgs": ["/Users/akshanshdeva/Desktop/Claude/job-portfolio", "-p", "3457", "-c-1"],
-      "port": 3457
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-I",
+        "-c",
+        "import http.server,socketserver,os;os.chdir('/Users/akshanshdeva/Documents/Dev/job-portfolio');socketserver.TCPServer.allow_reuse_address=True;socketserver.TCPServer(('127.0.0.1',8000),http.server.SimpleHTTPRequestHandler).serve_forever()"
+      ],
+      "port": 8000
     }
   ]
 }
