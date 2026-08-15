@@ -350,29 +350,29 @@ img {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0 14px;
+  gap: 4px 0;
   margin-bottom: 32px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 400;
-  line-height: 19.5px;
-  color: #4a4843;
+  line-height: 24px;
+  color: #1a1917;
 }
 
+/* Hairline rules read as discrete cells; the padding carries the spacing. */
 .hero-metric {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
   white-space: nowrap;
+  padding: 0 24px;
+  border-left: 1px solid #ebebeb;
 }
 
-.hero-metric::after {
-  content: '\00B7';
-  color: #b0aca5;
+.hero-metric:first-child {
+  padding-left: 0;
+  border-left: none;
 }
 
-.hero-metric:last-child::after {
-  content: none;
+.hero-metric:last-child {
+  padding-right: 0;
 }
 
 .hero-ctas {
@@ -1334,16 +1334,17 @@ img {
   }
 
   .hero-metrics {
-    font-size: 12px;
-    line-height: 18px;
-    gap: 2px 18px;
+    font-size: 14px;
+    line-height: 21px;
+    gap: 6px 16px;
     margin-bottom: 24px;
   }
 
-  /* Wrapping puts a separator at the end of a line, which reads as a
-     stray mark. Spacing alone carries the grouping at this width. */
-  .hero-metric::after {
-    content: none;
+  /* A wrapped line would otherwise open with a rule hanging off its left
+     edge, so spacing alone carries the grouping at this width. */
+  .hero-metric {
+    padding: 0;
+    border-left: none;
   }
 
   .hero-line-dark,
@@ -1668,8 +1669,8 @@ img {
 [data-theme="dark"] .hero-for { color: #f0efe9; }
 [data-theme="dark"] .hero-cycle-word { color: #6b6762; }
 [data-theme="dark"] .hero-vibe { color: #6b6762; }
-[data-theme="dark"] .hero-metrics { color: #9c9994; }
-[data-theme="dark"] .hero-metric::after { color: #6b6762; }
+[data-theme="dark"] .hero-metrics { color: #f0efe9; }
+[data-theme="dark"] .hero-metric { border-left-color: #2e2c2a; }
 [data-theme="dark"] .btn-primary {
   background: #f0efe9;
   color: #111110;
