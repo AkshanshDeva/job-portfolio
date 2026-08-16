@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Goal-aware first run · Usersnap prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#023be3;
+    --primary-ink:#1e6be5;
+    --canvas:#f9fafb;
+    --panel:#f6f7f9;
+    --surface:#ffffff;
+    --border:#dce2e8;
+    --ink:#212b37;
+    --muted:#697386;
+    --faint:#8b93a5;
+    --banner:#e4ecff;
+    --trial:#b9cafe;
+    --nav-active:#f6f7ff;
+    --teal:#0397a7;
+    --amber-bg:#fef7e9;
+    --green-bg:#ebf8f3;
+    --radius:8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font:400 14px/1.5 Inter,Helvetica,Arial,sans-serif;
+    color:var(--ink); background:#eceef1; -webkit-font-smoothing:antialiased;
+  }
+
+
+  /* ---------- walkthrough (prototype control, deliberately not product UI) ---------- */
+  .wt{position:fixed; right:26px; bottom:26px; z-index:60; font-family:Inter,Helvetica,Arial,sans-serif}
+  .wt-panel{
+    width:342px; background:#17181c; color:#fff; border-radius:15px; overflow:hidden;
+    box-shadow:0 14px 44px rgba(9,11,16,.34);
+    transition:opacity .16s ease, transform .16s ease;
+  }
+  .wt.is-closed .wt-panel{opacity:0; transform:translateY(8px) scale(.98); pointer-events:none; position:absolute; right:0; bottom:0}
+  .wt-head{display:flex; align-items:flex-start; gap:12px; padding:15px 16px 13px; border-bottom:1px solid #26282f}
+  .wt-head div{flex:1; min-width:0}
+  .wt-head b{display:block; font-size:13px; font-weight:600; letter-spacing:.01em}
+  .wt-head span{display:block; font-size:11.5px; color:#9aa0ad; margin-top:2px; line-height:1.45}
+  .wt-x{
+    width:26px; height:26px; border-radius:7px; border:0; background:#24262d; color:#c9ccd4;
+    cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+  }
+  .wt-x:hover{background:#2e3038; color:#fff}
+  .wt-x svg{width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+  .wt-rows{padding:8px}
+  .wt-row{
+    display:flex; gap:11px; width:100%; text-align:left; padding:11px 12px; border:0; border-radius:10px;
+    background:none; color:#fff; cursor:pointer; font:inherit;
+  }
+  .wt-row:hover{background:#22242b}
+  .wt-row.on{background:#2a2d35}
+  .wt-tick{
+    width:17px; height:17px; border-radius:50%; border:1.5px solid #4a4d57; flex-shrink:0; margin-top:2px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .wt-row.on .wt-tick{border-color:#fff; background:#fff}
+  .wt-tick i{width:7px; height:7px; border-radius:50%; background:#17181c; display:none}
+  .wt-row.on .wt-tick i{display:block}
+  .wt-body{flex:1; min-width:0}
+  .wt-body b{display:block; font-size:12.5px; font-weight:600; margin-bottom:3px}
+  .wt-sub{display:block; font-size:11.5px; color:#9aa0ad; line-height:1.45}
+  /* notes only unfold on the row you are looking at */
+  .wt-notes{display:none; margin-top:10px; padding-top:10px; border-top:1px solid #3c3f48}
+  .wt-row.on .wt-notes{display:block}
+  .wt-note{display:flex; gap:8px; margin-bottom:8px}
+  .wt-note:last-child{margin-bottom:0}
+  .wt-note i{color:#6d7480; font-style:normal; font-size:11.5px; line-height:1.45; flex-shrink:0}
+  .wt-note em{color:#c9ccd4; font-style:normal; font-size:11.5px; line-height:1.45}
+  .wt-back{
+    display:block; border-top:1px solid #26282f; padding:12px 16px;
+    color:#9aa0ad; font-size:11.5px; text-decoration:none;
+  }
+  .wt-back:hover{color:#fff; background:#1e2027}
+  .wt-fab{
+    display:none; align-items:center; gap:9px; background:#17181c; color:#fff; border:0;
+    padding:0 18px; height:46px; border-radius:23px; cursor:pointer;
+    font:600 13px/1 Inter,sans-serif; box-shadow:0 8px 26px rgba(9,11,16,.3);
+  }
+  .wt-fab:hover{background:#22242b}
+  .wt-fab svg{width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round}
+  .wt.is-closed .wt-fab{display:flex}
+
+  /* ---------- product chrome ---------- */
+  .app{max-width:1420px; margin:0 auto; background:var(--canvas)}
+  .trial{background:var(--trial); text-align:center; padding:9px 16px; font-size:13px}
+  .trial a{color:var(--primary); font-weight:600}
+  /* fill the window so the navigation runs full height, as it does in the product */
+  .frame{display:flex; min-height:calc(100vh - 108px)}
+
+  .nav{
+    width:64px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; align-items:center; padding:14px 0; gap:6px;
+  }
+  .nav .logo{width:26px; height:26px; border-radius:50%; border:2.5px solid var(--primary); margin-bottom:14px}
+  .nav-btn{
+    width:38px; height:38px; border-radius:var(--radius); display:grid; place-items:center;
+    color:#5b6472; position:relative;
+  }
+  .nav-btn.on{background:var(--nav-active); color:var(--primary)}
+  .nav-btn svg{width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.8;
+    stroke-linecap:round; stroke-linejoin:round}
+  .nav-spacer{flex:1}
+  .badge-new{
+    position:absolute; top:-6px; right:-8px; background:var(--nav-active); color:var(--primary);
+    font-size:9px; font-weight:700; padding:1px 4px; border-radius:3px; border:1px solid #d9dffc;
+  }
+
+  .main{flex:1; min-width:0; display:flex; flex-direction:column}
+  .spacebar{
+    background:var(--surface); border-bottom:1px solid var(--border);
+    padding:11px 22px; display:flex; align-items:center; gap:9px; font-weight:600; font-size:14px;
+  }
+  .space-dot{width:13px; height:13px; border-radius:3px; background:var(--primary)}
+  .content{padding:30px 34px 48px; flex:1}
+
+  h1{font-size:24px; font-weight:700; letter-spacing:-0.014em; margin-bottom:6px}
+  .sub{color:var(--muted); font-size:14.5px; margin-bottom:28px; max-width:62ch}
+
+  .layout{display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:24px; align-items:stretch}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    display:flex; flex-direction:column;
+  }
+
+  /* stepper */
+  .steps{padding:8px 0}
+  .step{padding:20px 24px; display:flex; gap:16px; position:relative}
+  .step::before{
+    content:''; position:absolute; left:36px; top:52px; bottom:-8px; width:1.5px;
+    background:var(--border);
+  }
+  .step:last-child::before{display:none}
+  .dot{
+    width:25px; height:25px; border-radius:50%; flex-shrink:0; display:grid; place-items:center;
+    font-size:12px; font-weight:700; background:var(--primary); color:#fff; margin-top:1px;
+    position:relative; z-index:1; box-shadow:0 0 0 4px var(--surface);
+  }
+  .dot.idle{background:var(--panel); color:var(--faint); border:1px solid var(--border)}
+  .step h3{font-size:15.5px; font-weight:600; margin-bottom:5px}
+  .step p{color:var(--muted); font-size:13.5px; margin-bottom:14px; max-width:52ch}
+  .step p.last{margin-bottom:0}
+
+  .card-foot{
+    margin-top:auto; border-top:1px solid var(--border); padding:15px 24px;
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  }
+  .card-foot span{font-size:13px; color:var(--muted)}
+
+  .btn{
+    display:inline-flex; align-items:center; gap:7px; font:600 13.5px/1 Inter,sans-serif;
+    padding:0 17px; height:38px; border-radius:var(--radius); border:1px solid transparent;
+    cursor:pointer; text-decoration:none;
+  }
+  .btn-primary{background:var(--primary); color:#fff}
+  .btn-primary:hover{background:#0230bd}
+  .btn-ghost{background:var(--surface); color:var(--ink); border-color:var(--border)}
+  .btn-ghost:hover{background:var(--panel)}
+  .btn-full{width:100%; justify-content:center}
+
+  /* source picker, grouped by where the idea came from */
+  .src-groups{margin-bottom:18px}
+  .src-group + .src-group{margin-top:16px}
+  .src-label{
+    font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--faint); margin-bottom:9px;
+  }
+  .sources{display:flex; gap:9px; flex-wrap:wrap}
+  .source{
+    display:flex; align-items:center; gap:8px; border:1px solid var(--border); background:var(--surface);
+    border-radius:var(--radius); padding:9px 13px; font-size:13px; font-weight:500; cursor:pointer;
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .source:hover{border-color:#adb8c7; background:var(--panel)}
+  .source svg{width:17px; height:17px; flex-shrink:0; display:block}
+
+  .tmpl{display:grid; grid-template-columns:repeat(2,1fr); gap:9px; margin-bottom:16px}
+  .tmpl button{
+    text-align:left; border:1px solid var(--border); background:var(--surface); border-radius:var(--radius);
+    padding:11px 13px; cursor:pointer; font:inherit;
+  }
+  .tmpl button:hover{border-color:#adb8c7; background:var(--panel)}
+  .tmpl b{display:block; font-size:13.5px; font-weight:600; margin-bottom:2px}
+  .tmpl span{font-size:12px; color:var(--muted)}
+
+  /* right hand preview card */
+  .side{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    display:flex; flex-direction:column;
+  }
+  .side-h{padding:19px 22px 0}
+  .side-h b{font-size:15.5px; font-weight:600; display:block; margin-bottom:5px}
+  .side-h p{font-size:13.5px; color:var(--muted); line-height:1.5}
+  .side-body{
+    flex:1; display:flex; align-items:center; justify-content:center;
+    padding:20px 22px; background:
+      radial-gradient(circle at 50% 40%, #f2f6ff 0%, rgba(242,246,255,0) 68%);
+  }
+  .side-foot{padding:0 22px 20px}
+
+  /* announcement starting points */
+  .pick{padding:22px 24px}
+  .pick h3{font-size:15.5px; font-weight:600; margin-bottom:5px}
+  .pick > p{color:var(--muted); font-size:13.5px; margin-bottom:16px}
+  .tpl-row{
+    display:flex; align-items:center; gap:13px; width:100%; text-align:left; font:inherit; color:inherit;
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:13px 14px; margin-bottom:9px; cursor:pointer;
+    transition:border-color .12s ease, box-shadow .12s ease;
+  }
+  .tpl-row:last-child{margin-bottom:0}
+  .tpl-row:hover,.tpl-row:focus-within{border-color:var(--primary); box-shadow:0 2px 10px rgba(2,59,227,.09)}
+  .tpl-ico{width:36px; height:36px; border-radius:9px; display:flex; align-items:center;
+    justify-content:center; flex-shrink:0}
+  .tpl-ico svg{width:18px; height:18px; display:block; fill:none; stroke-width:1.9;
+    stroke-linecap:round; stroke-linejoin:round}
+  .tpl-txt{flex:1; min-width:0}
+  .tpl-txt b{display:block; font-size:13.5px; font-weight:600; margin-bottom:2px}
+  .tpl-txt span{display:block; font-size:12.5px; color:var(--muted); line-height:1.45}
+  /* space is reserved so hovering never reflows the row */
+  .tpl-acts{display:flex; gap:8px; flex-shrink:0; opacity:0; pointer-events:none; transition:opacity .12s ease}
+  .tpl-row:hover .tpl-acts,.tpl-row:focus-within .tpl-acts{opacity:1; pointer-events:auto}
+  .tpl-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    font:600 12.5px/1 Inter,sans-serif; padding:0 13px; height:34px; border-radius:7px;
+    border:1px solid var(--border); background:var(--surface); color:var(--ink); cursor:pointer; white-space:nowrap;
+  }
+  .tpl-btn.primary{background:var(--primary); border-color:var(--primary); color:#fff}
+
+  /* finished changelog, shown as the destination */
+  .cl-feed{border:1px solid var(--border); border-radius:9px; overflow:hidden; width:100%;
+    box-shadow:0 2px 8px rgba(23,32,50,.06); background:var(--surface)}
+  .cl-top{padding:11px; border-bottom:1px solid #eef1f5; font-weight:700; font-size:13px; text-align:center}
+  .cl-item{padding:12px 13px; border-bottom:1px solid #eef1f5}
+  .cl-item:last-child{border-bottom:0}
+  .cl-item.past{opacity:.5}
+  .cl-date{font-size:10px; color:var(--faint); margin-bottom:4px}
+  .cl-title{font-size:12.5px; font-weight:600; margin-bottom:7px}
+  .cl-hero{height:52px; border-radius:6px; margin-bottom:8px; background:linear-gradient(120deg,#e3f6f3,#eaefff)}
+  .cl-line{height:5px; border-radius:3px; background:#eef1f5; margin-bottom:5px}
+  .cl-line:last-child{margin-bottom:0; background:#f4f6f8}
+
+  /* more samples */
+  .more{margin-top:36px; padding-top:28px; border-top:1px solid var(--border)}
+  .more h2{font-size:16.5px; font-weight:600; margin-bottom:4px}
+  .more > p{font-size:13.5px; color:var(--muted); margin-bottom:16px}
+  .more-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+  .more-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px 17px;
+    cursor:pointer; text-align:center; font:inherit; color:inherit;
+    transition:border-color .12s ease, box-shadow .12s ease;
+  }
+  .more-card:hover{border-color:#adb8c7; box-shadow:0 2px 10px rgba(23,32,50,.06)}
+  .more-ico{width:40px; height:40px; border-radius:11px; display:flex;
+    align-items:center; justify-content:center; margin:0 auto 14px}
+  .more-ico svg{width:20px; height:20px; display:block; fill:none; stroke-width:1.8;
+    stroke-linecap:round; stroke-linejoin:round}
+  .more-card b{display:block; font-size:14px; font-weight:600; margin-bottom:3px}
+  .more-card span{font-size:12.5px; color:var(--muted); line-height:1.45; display:block}
+  .more-card .more-ico{display:flex; align-items:center; justify-content:center}
+
+  /* mini board */
+  .kanban{display:grid; grid-template-columns:repeat(2,1fr); gap:9px; width:100%}
+  .kcol{background:var(--panel); border:1px solid var(--border); border-radius:9px; padding:9px}
+  .kcol-h{display:flex; align-items:center; gap:6px; font-size:11.5px; font-weight:600; margin-bottom:8px}
+  .kdot{width:6px; height:6px; border-radius:50%}
+  .kcard{
+    border:1px solid var(--border); border-radius:7px; padding:9px; margin-bottom:7px;
+    background:var(--surface); box-shadow:0 1px 2px rgba(23,32,50,.04);
+  }
+  .kcard:last-child{margin-bottom:0}
+  .kmeta{font-size:10.5px; color:var(--faint); margin-bottom:4px}
+  .ktitle{font-size:12px; font-weight:500; line-height:1.35; margin-bottom:7px}
+  .chip{display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px}
+  .chip-tag{background:var(--teal); color:#fff}
+  .chip-hi{background:var(--green-bg); color:#0d7a58}
+  .chip-med{background:var(--amber-bg); color:#946200}
+
+  /* changelog preview */
+  .changelog{
+    background:var(--surface); border:1px solid var(--border); border-radius:9px; overflow:hidden;
+    width:100%; box-shadow:0 2px 8px rgba(23,32,50,.06);
+  }
+  .cl-h{padding:12px 14px; border-bottom:1px solid var(--border); font-weight:700; font-size:13.5px; text-align:center}
+  .cl-b{padding:14px}
+  .cl-meta{display:flex; justify-content:space-between; align-items:center; font-size:10.5px;
+    color:var(--faint); margin-bottom:7px}
+  .cl-draft{background:var(--panel); border-radius:4px; padding:1px 7px; font-weight:600}
+  .cl-art{height:88px; border-radius:7px; background:linear-gradient(120deg,#e3f6f3,#eaefff); margin:9px 0}
+  .cl-b p{font-size:11.5px; color:var(--muted); line-height:1.55}
+
+  /* "today" state */
+  .snippet-banner{
+    background:var(--banner); border:1px solid #cddaff; border-radius:var(--radius);
+    padding:11px 15px; font-size:13.5px; margin-bottom:24px;
+  }
+  .snippet-banner a{color:var(--primary); font-weight:600}
+  .sec-h{font-size:16px; font-weight:600; margin:0 0 11px}
+  .row{
+    display:flex; align-items:center; gap:14px; background:var(--surface);
+    border:1px solid var(--border); border-radius:var(--radius); padding:13px 16px; margin-bottom:9px;
+  }
+  .row .ico{width:30px; height:30px; border-radius:7px; display:grid; place-items:center; flex-shrink:0}
+  .row .nm{font-weight:600; font-size:13.5px; flex:1}
+  .row .st{font-size:12px; color:var(--muted)}
+  .pill{font-size:11.5px; font-weight:600; padding:3px 9px; border-radius:5px; background:var(--panel); color:var(--muted)}
+  .pill.live{background:var(--green-bg); color:#0d7a58}
+
+  .fallback{
+    margin-top:24px; padding-top:18px; border-top:1px solid var(--border);
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .fallback span{font-size:13px; color:var(--muted)}
+
+  .hide{display:none}
+
+  @media (max-width:960px){
+    .layout{grid-template-columns:1fr}
+    .kanban,.tmpl{grid-template-columns:1fr}
+    .more-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="trial">Collect 20 feedback &amp; connect unlimited channels during your trial. <a href="#">Clear samples</a> anytime you're ready</div>
+  <div class="frame">
+
+    <nav class="nav" aria-label="Main">
+      <div class="logo"></div>
+      <div class="nav-btn on" title="Home"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
+      <div class="nav-btn" title="Opportunities"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8.5l1.2 2.5 2.6.3-1.9 1.8.5 2.6L12 14.5l-2.4 1.2.5-2.6-1.9-1.8 2.6-.3z"/></svg></div>
+      <div class="nav-btn" title="Triage inbox"><svg viewBox="0 0 24 24"><g transform="translate(1 0)"><path d="M5 5v8a3 3 0 0 0 3 3h9"/><path d="M14 13l3 3-3 3"/></g></svg></div>
+      <div class="nav-btn" title="Announcements"><svg viewBox="0 0 24 24"><g transform="translate(0.32 0)"><path d="M4 10v4h3l6 4V6l-6 4H4z"/><path d="M18 9a4 4 0 0 1 0 6"/></g></svg></div>
+      <div class="nav-btn" title="Segments"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3"/><circle cx="16" cy="10" r="2.4"/><path d="M4 19c0-2.6 2.2-4.4 5-4.4s5 1.8 5 4.4M15 19c0-1.9 1.4-3.3 3.4-3.3"/></svg></div>
+      <div class="nav-spacer"></div>
+      <div class="nav-btn" title="Channels"><span class="badge-new">New</span><svg viewBox="0 0 24 24"><path d="M13 3L5 14h6l-1 7 8-11h-6l1-7z"/></svg></div>
+      <div class="nav-btn" title="Usage"><svg viewBox="0 0 24 24"><path d="M6 18V11M12 18V6M18 18v-5"/></svg></div>
+    </nav>
+
+    <div class="main">
+      <div class="spacebar"><span class="space-dot"></span> Akshansh's Space</div>
+      <div class="content">
+
+        <!-- ============ TODAY ============ -->
+        <section data-panel="today">
+          <div class="snippet-banner">Your snippet has not been installed yet. Copy and install the snippet from our <a href="#">installation</a> page.</div>
+          <h3 class="sec-h">Feedback menus</h3>
+          <div class="row">
+            <span class="ico" style="background:#fdf0d8"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#e0a23c" stroke-width="2.2" stroke-linecap="round"><path d="M5 7h14M5 12h14M5 17h9"/></svg></span>
+            <span class="nm">Feedback and Changelog Menu</span>
+            <span class="st">3 projects connected</span>
+            <span class="pill">Paused</span>
+          </div>
+          <h3 class="sec-h" style="margin-top:24px">Projects</h3>
+          <div class="row"><span class="ico" style="background:#e3ecff"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#023be3" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"/></svg></span><span class="nm">Co-Pilot Product Discovery</span><span class="st">50 items · 50 open</span><span class="pill">Paused</span></div>
+          <div class="row"><span class="ico" style="background:#fdf0d8"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#e0a23c" stroke-width="2"><path d="M12 4l2.3 4.9 5.2.7-3.8 3.6 1 5.3L12 16l-4.7 2.5 1-5.3L4.5 9.6l5.2-.7z"/></svg></span><span class="nm">User satisfaction</span><span class="st">20 items · 20 open</span><span class="pill live">Live</span></div>
+          <div class="row"><span class="ico" style="background:#fdf0d8"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#e0a23c" stroke-width="2"><circle cx="12" cy="13" r="5"/><path d="M9 6l1.5 2M15 6l-1.5 2M4 13h3M17 13h3"/></svg></span><span class="nm">Fast bug tracking</span><span class="st">10 items · 10 open</span><span class="pill live">Live</span></div>
+        </section>
+
+        <!-- ============ DISCOVERY ============ -->
+        <section data-panel="discovery" class="hide">
+          <h1>Let's set up your opportunities board</h1>
+          <p class="sub">We will help you collect, validate and prioritise ideas.</p>
+
+          <div class="layout">
+            <div class="card">
+              <div class="steps">
+                <div class="step">
+                  <span class="dot">1</span>
+                  <div>
+                    <h3>Bring in where your ideas already live</h3>
+                    <p>Feature requests turn up in calls, support threads, Slack and half-finished spreadsheets. Connect the ones you use and Usersnap drafts opportunities from what it finds.</p>
+                    <div class="src-groups">
+                    <div class="src-group">
+                    <div class="src-label">What your customers said</div>
+                    <div class="sources">
+                      <button class="source">
+                        <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#023be3"/><circle cx="12" cy="12" r="6" fill="none" stroke="#fff" stroke-width="1.8"/><path d="M9.2 12.4c.6 1.1 1.6 1.7 2.8 1.7s2.2-.6 2.8-1.7" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+                        Feedback widget
+                      </button>
+                      <button class="source">
+                        <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#2D8CFF"/><path d="M5.5 9.2A1.7 1.7 0 0 1 7.2 7.5h5.1a1.7 1.7 0 0 1 1.7 1.7v5.6a1.7 1.7 0 0 1-1.7 1.7H7.2a1.7 1.7 0 0 1-1.7-1.7z" fill="#fff"/><path d="M15.1 11.4l3-2.1c.4-.3.9 0 .9.5v4.4c0 .5-.5.8-.9.5l-3-2.1z" fill="#fff"/></svg>
+                        Zoom
+                      </button>
+                      <button class="source">
+                        <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#7C3AED"/><circle cx="12" cy="12" r="5.4" fill="none" stroke="#fff" stroke-width="1.9"/><path d="M12 12h4.2" stroke="#fff" stroke-width="1.9" stroke-linecap="round"/></svg>
+                        Gong
+                      </button>
+                      <button class="source">
+                        <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#1F8DED"/><rect x="5.4" y="6.6" width="1.9" height="8.4" rx=".95" fill="#fff"/><rect x="8.6" y="5.6" width="1.9" height="10.6" rx=".95" fill="#fff"/><rect x="11.8" y="5.6" width="1.9" height="10.6" rx=".95" fill="#fff"/><rect x="15" y="6.6" width="1.9" height="8.4" rx=".95" fill="#fff"/><path d="M6 16.4c3.6 2.3 8.4 2.3 12 0" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+                        Intercom
+                      </button>
+                      <button class="source">
+                        <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#62D84E"/><circle cx="12" cy="12" r="5.6" fill="none" stroke="#fff" stroke-width="2.1"/><circle cx="12" cy="12" r="1.9" fill="#fff"/></svg>
+                        ServiceNow
+                      </button>
+                    </div>
+                    </div>
+                    <div class="src-group">
+                    <div class="src-label">What your team wrote down</div>
+                    <div class="sources">
+                      <button class="source">
+                        <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#fff" stroke="#e3e8ef"/><path d="M8.6 3.6a2 2 0 1 0 0 4h1.9V5.6a2 2 0 0 0-1.9-2z" fill="#36C5F0"/><path d="M8.6 8.8H3.9a2 2 0 1 0 0 4h4.7a2 2 0 1 0 0-4z" fill="#36C5F0"/><path d="M20.1 10.8a2 2 0 1 0-4 0v1.9h2a2 2 0 0 0 2-1.9z" fill="#2EB67D"/><path d="M14.9 10.8V6.1a2 2 0 1 0-4 0v4.7a2 2 0 1 0 4 0z" fill="#2EB67D"/><path d="M12.9 20.4a2 2 0 1 0 0-4H11v2a2 2 0 0 0 1.9 2z" fill="#ECB22E"/><path d="M12.9 15.2h4.7a2 2 0 1 0 0-4h-4.7a2 2 0 1 0 0 4z" fill="#ECB22E"/><path d="M3.6 13.2a2 2 0 1 0 4 0v-2h-2a2 2 0 0 0-2 2z" fill="#E01E5A"/><path d="M8.8 13.2v4.7a2 2 0 1 0 4 0v-4.7a2 2 0 1 0-4 0z" fill="#E01E5A"/></svg>
+                        Slack
+                      </button>
+                      <button class="source">
+                        <svg viewBox="0 0 24 24"><path d="M6 2.6h7.4L19 8.2v13.2a1.4 1.4 0 0 1-1.4 1.4H6a1.4 1.4 0 0 1-1.4-1.4V4a1.4 1.4 0 0 1 1.4-1.4z" fill="#0F9D58"/><path d="M13.4 2.6L19 8.2h-5.6z" fill="#0B7C46"/><path d="M8 11.4h8v7H8z" fill="#fff"/><path d="M8 13.7h8M8 16h8M10.7 11.4v7M13.3 11.4v7" stroke="#0F9D58" stroke-width=".9"/></svg>
+                        Google Sheets
+                      </button>
+                    </div>
+                    </div>
+                    </div>
+                    <button class="btn btn-primary">Connect a source</button>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <span class="dot idle">2</span>
+                  <div>
+                    <h3>Review what comes back</h3>
+                    <p class="last">Your opportunities get scored and sorted onto the board. You decide what is Now, Next and Later.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-foot">
+                <span>Rather not connect anything yet?</span>
+                <button class="btn btn-ghost">Add an opportunity manually</button>
+              </div>
+            </div>
+
+            <div class="side">
+              <div class="side-h">
+                <b>Want to see it first?</b>
+                <p>A board built from sample data, so you can see the shape of it before your own arrives.</p>
+              </div>
+              <div class="side-body">
+                <svg viewBox="0 0 240 170" style="width:100%;max-width:250px" role="img" aria-label="Abstract opportunity board">
+                  <rect x="6" y="34" width="68" height="112" rx="11" fill="#eef2fe"/>
+                  <rect x="86" y="18" width="68" height="128" rx="11" fill="#e3f6f3"/>
+                  <rect x="166" y="46" width="68" height="100" rx="11" fill="#fdf3e3"/>
+                  <circle cx="18" cy="26" r="3.5" fill="#9db6f2"/><rect x="27" y="23" width="26" height="6" rx="3" fill="#cbd9f7"/>
+                  <circle cx="98" cy="10" r="3.5" fill="#7fd0c0"/><rect x="107" y="7" width="26" height="6" rx="3" fill="#b6e5da"/>
+                  <circle cx="178" cy="38" r="3.5" fill="#eec081"/><rect x="187" y="35" width="26" height="6" rx="3" fill="#f6ddb9"/>
+                  <g fill="#fff">
+                    <rect x="14" y="44" width="52" height="30" rx="7"/><rect x="14" y="82" width="52" height="30" rx="7"/>
+                    <rect x="94" y="28" width="52" height="30" rx="7"/><rect x="94" y="66" width="52" height="30" rx="7"/><rect x="94" y="104" width="52" height="30" rx="7"/>
+                    <rect x="174" y="56" width="52" height="30" rx="7"/>
+                  </g>
+                  <g rx="2">
+                    <rect x="21" y="52" width="30" height="5" rx="2.5" fill="#c3d0f7"/><rect x="21" y="62" width="17" height="5" rx="2.5" fill="#e4eafc"/>
+                    <rect x="21" y="90" width="26" height="5" rx="2.5" fill="#c3d0f7"/><rect x="21" y="100" width="20" height="5" rx="2.5" fill="#e4eafc"/>
+                    <rect x="101" y="36" width="32" height="5" rx="2.5" fill="#9fdcd0"/><rect x="101" y="46" width="18" height="5" rx="2.5" fill="#d3f0e9"/>
+                    <rect x="101" y="74" width="27" height="5" rx="2.5" fill="#9fdcd0"/><rect x="101" y="84" width="22" height="5" rx="2.5" fill="#d3f0e9"/>
+                    <rect x="101" y="112" width="30" height="5" rx="2.5" fill="#9fdcd0"/><rect x="101" y="122" width="15" height="5" rx="2.5" fill="#d3f0e9"/>
+                    <rect x="181" y="64" width="28" height="5" rx="2.5" fill="#f2cf9a"/><rect x="181" y="74" width="19" height="5" rx="2.5" fill="#f9ead2"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="side-foot">
+                <button class="btn btn-ghost btn-full">Open the sample board</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="more">
+            <h2>More samples</h2>
+            <p>Other things Usersnap does, with sample data already in them.</p>
+            <div class="more-grid">
+              <button class="more-card">
+                <span class="more-ico" style="background:#e4ecff"><svg viewBox="0 0 24 24" stroke="#023be3"><g transform="translate(1 0)"><path d="M5 5v8a3 3 0 0 0 3 3h9"/><path d="M14 13l3 3-3 3"/></g></svg></span>
+                <b>Triage inbox</b>
+                <span>81 sample items, already clustered and labelled.</span>
+              </button>
+              <button class="more-card">
+                <span class="more-ico" style="background:#e3f6f3"><svg viewBox="0 0 24 24" stroke="#0d7a58"><g transform="translate(0.32 0)"><path d="M4 10v4h3l6 4V6l-6 4H4z"/><path d="M18 9a4 4 0 0 1 0 6"/></g></svg></span>
+                <b>Announcements</b>
+                <span>A changelog your users can actually read.</span>
+              </button>
+              <button class="more-card">
+                <span class="more-ico" style="background:#fdf3e3"><svg viewBox="0 0 24 24" stroke="#b07a1e"><g transform="translate(0 -0.5)"><rect x="3.5" y="5" width="17" height="12" rx="2.5"/><path d="M8 20h8"/></g></svg></span>
+                <b>Feedback widget</b>
+                <span>Try it on a demo page without installing anything.</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ COMMUNICATE ============ -->
+        <section data-panel="communicate" class="hide">
+          <h1>Let's ship your first announcement</h1>
+          <p class="sub">We will help you tell users what changed, in the product and in your changelog.</p>
+
+          <div class="layout">
+            <div class="card">
+              <div class="pick">
+                <h3>Create your first announcement</h3>
+                <p>Five starting points. You can change everything in them.</p>
+                <button class="tpl-row">
+                  <span class="tpl-ico" style="background:#eef2fe"><svg viewBox="0 0 24 24" stroke="#023be3"><path d="M12 6v12M6 12h12"/></svg></span>
+                  <span class="tpl-txt"><b>Start from scratch</b><span>For your unique use case, start with a blank slate.</span></span>
+                  <span class="tpl-acts">
+                    <span class="tpl-btn">Preview</span>
+                    <span class="tpl-btn primary">Use template</span>
+                  </span>
+                </button>
+                <button class="tpl-row">
+                  <span class="tpl-ico" style="background:#e3f6f3"><svg viewBox="0 0 24 24" stroke="#0d7a58"><g transform="translate(0.32 0)"><path d="M4 10v4h3l6 4V6l-6 4H4z"/><path d="M18 9a4 4 0 0 1 0 6"/></g></svg></span>
+                  <span class="tpl-txt"><b>Product News</b><span>Promote product changes and new releases with rich visuals as pop-up announcements.</span></span>
+                  <span class="tpl-acts">
+                    <span class="tpl-btn">Preview</span>
+                    <span class="tpl-btn primary">Use template</span>
+                  </span>
+                </button>
+                <button class="tpl-row">
+                  <span class="tpl-ico" style="background:#fdf3e3"><svg viewBox="0 0 24 24" stroke="#b07a1e"><path d="M12 4.5l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z"/></svg></span>
+                  <span class="tpl-txt"><b>New Feature Announcement</b><span>Easily showcase updates, drive engagement and adoption of your newest release.</span></span>
+                  <span class="tpl-acts">
+                    <span class="tpl-btn">Preview</span>
+                    <span class="tpl-btn primary">Use template</span>
+                  </span>
+                </button>
+                <button class="tpl-row">
+                  <span class="tpl-ico" style="background:#fdeaea"><svg viewBox="0 0 24 24" stroke="#b32b30"><path d="M12 5.5l8 13.5H4z"/><path d="M12 10.5v3.5M12 16.7v.1"/></svg></span>
+                  <span class="tpl-txt"><b>Maintenance Window</b><span>Prepare users for maintenance windows to avoid confusion and maintain trust.</span></span>
+                  <span class="tpl-acts">
+                    <span class="tpl-btn">Preview</span>
+                    <span class="tpl-btn primary">Use template</span>
+                  </span>
+                </button>
+                <button class="tpl-row">
+                  <span class="tpl-ico" style="background:#f4eefe"><svg viewBox="0 0 24 24" stroke="#6d3fc4"><rect x="3.5" y="6.5" width="12" height="11" rx="2.5"/><path d="M15.5 11l5-3v8l-5-3z"/></svg></span>
+                  <span class="tpl-txt"><b>Webinar Invitation</b><span>Invite users to webinars by delivering relevant info in right context.</span></span>
+                  <span class="tpl-acts">
+                    <span class="tpl-btn">Preview</span>
+                    <span class="tpl-btn primary">Use template</span>
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <div class="side">
+              <div class="side-h">
+                <b>What it builds up to</b>
+                <p>Your announcements collect into a changelog your users can browse.</p>
+              </div>
+              <div class="side-body">
+                <div class="cl-feed">
+                  <div class="cl-top">What's new?</div>
+                  <div class="cl-item">
+                    <div class="cl-date">Aug 16, 2026</div>
+                    <div class="cl-title">Saved views are here &#10024;</div>
+                    <div class="cl-hero"></div>
+                    <div class="cl-line" style="width:92%"></div>
+                    <div class="cl-line" style="width:68%"></div>
+                  </div>
+                  <div class="cl-item">
+                    <div class="cl-date">Aug 2, 2026</div>
+                    <div class="cl-title">Scheduled maintenance</div>
+                    <div class="cl-line" style="width:86%"></div>
+                  </div>
+                  <div class="cl-item past">
+                    <div class="cl-date">Jul 24, 2026</div>
+                    <div class="cl-title">Faster reporting</div>
+                  </div>
+                </div>
+              </div>
+              <div class="side-foot">
+                <button class="btn btn-ghost btn-full">View a sample changelog</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="more">
+            <h2>More samples</h2>
+            <p>Other things Usersnap does, with sample data already in them.</p>
+            <div class="more-grid">
+              <button class="more-card">
+                <span class="more-ico" style="background:#e4ecff"><svg viewBox="0 0 24 24" stroke="#023be3"><circle cx="12" cy="12" r="8"/><path d="M12 8.5l1.2 2.5 2.6.3-1.9 1.8.5 2.6L12 14.5l-2.4 1.2.5-2.6-1.9-1.8 2.6-.3z"/></svg></span>
+                <b>Opportunity board</b>
+                <span>Ideas scored and sorted into Now, Next and Later.</span>
+              </button>
+              <button class="more-card">
+                <span class="more-ico" style="background:#e3f6f3"><svg viewBox="0 0 24 24" stroke="#0d7a58"><g transform="translate(1 0)"><path d="M5 5v8a3 3 0 0 0 3 3h9"/><path d="M14 13l3 3-3 3"/></g></svg></span>
+                <b>Triage inbox</b>
+                <span>81 sample items, already clustered and labelled.</span>
+              </button>
+              <button class="more-card">
+                <span class="more-ico" style="background:#fdf3e3"><svg viewBox="0 0 24 24" stroke="#b07a1e"><g transform="translate(0 -0.5)"><rect x="3.5" y="5" width="17" height="12" rx="2.5"/><path d="M8 20h8"/></g></svg></span>
+                <b>Feedback widget</b>
+                <span>Try it on a demo page without installing anything.</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wt" id="wt">
+  <div class="wt-panel">
+    <div class="wt-head">
+      <div>
+        <b>Walkthrough</b>
+        <span>Same account, three versions of the home screen.</span>
+      </div>
+      <button class="wt-x" id="wtClose" aria-label="Collapse walkthrough">
+        <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+    <div class="wt-rows">
+      <button class="wt-row on" data-state="today">
+        <span class="wt-tick"><i></i></span>
+        <span class="wt-body">
+          <b>Today</b>
+          <span class="wt-sub">What the dashboard looks like today.</span>
+          <span class="wt-notes">
+            <span class="wt-note"><i>&rarr;</i><em>The only instruction on the page, and it points at the snippet.</em></span>
+            <span class="wt-note"><i>&rarr;</i><em>The same three sample projects for every account, whatever goal they picked.</em></span>
+          </span>
+        </span>
+      </button>
+      <button class="wt-row" data-state="discovery">
+        <span class="wt-tick"><i></i></span>
+        <span class="wt-body">
+          <b>Goal: Discovery</b>
+          <span class="wt-sub">How we get users activated faster, and to an aha moment sooner, when discovery is why they signed up.</span>
+          <span class="wt-notes">
+            <span class="wt-note"><i>&rarr;</i><em>Leads with getting data in, grouped by where ideas actually come from.</em></span>
+            <span class="wt-note"><i>&rarr;</i><em>The sample sits beside the task, not in place of it.</em></span>
+            <span class="wt-note"><i>&rarr;</i><em>The other pillars stay one click away, without competing with the task.</em></span>
+          </span>
+        </span>
+      </button>
+      <button class="wt-row" data-state="communicate">
+        <span class="wt-tick"><i></i></span>
+        <span class="wt-body">
+          <b>Goal: Communicate</b>
+          <span class="wt-sub">How we get users activated faster, and to an aha moment sooner, when communication is why they signed up.</span>
+          <span class="wt-notes">
+            <span class="wt-note"><i>&rarr;</i><em>Expose the templates, so users can create their first announcement and reach value earlier.</em></span>
+            <span class="wt-note"><i>&rarr;</i><em>A sample changelog shows them what it can look like on Day X.</em></span>
+            <span class="wt-note"><i>&rarr;</i><em>The other pillars stay one click away, without competing with the task.</em></span>
+          </span>
+        </span>
+      </button>
+    </div>
+    <a class="wt-back" href="index.html">Read the audit this came from &rarr;</a>
+  </div>
+  <button class="wt-fab" id="wtOpen">
+    <svg viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h9"/><circle cx="19" cy="17" r="2"/></svg>
+    Walkthrough
+  </button>
+</div>
+
+<script>
+  var wt     = document.getElementById('wt');
+  var rows   = document.querySelectorAll('.wt-row');
+  var panels = document.querySelectorAll('[data-panel]');
+
+  rows.forEach(function (r) {
+    r.addEventListener('click', function () {
+      var state = r.dataset.state;
+      rows.forEach(function (x) { x.classList.toggle('on', x === r); });
+      panels.forEach(function (p) { p.classList.toggle('hide', p.dataset.panel !== state); });
+    });
+  });
+
+  document.getElementById('wtClose').addEventListener('click', function () { wt.classList.add('is-closed'); });
+  document.getElementById('wtOpen').addEventListener('click', function () { wt.classList.remove('is-closed'); });
+
+</script>
+</body>
+</html>
