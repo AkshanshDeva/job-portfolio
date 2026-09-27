@@ -109,10 +109,10 @@ img {
 
 .nav-link {
   font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 400;
   color: #6b6762;
-  line-height: 19.5px;
+  line-height: 22px;
   transition: color 0.2s ease;
 }
 
@@ -301,7 +301,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 56px;
 }
 
@@ -395,7 +395,7 @@ img {
 }
 
 .company-logo[alt="OYO"] {
-  height: 15px;
+  height: 19px;
 }
 
 /* The mark dominates this file, so it needs more height to match the wordmarks. */
@@ -1227,7 +1227,7 @@ img {
   .company-logo { height: 15px; }
   .company-logo[alt="Medwing"]    { height: 14px; }
   .company-logo[alt="BharatPe"]   { height: 23px; }
-  .company-logo[alt="OYO"]        { height: 12px; }
+  .company-logo[alt="OYO"]        { height: 15px; }
   .company-logo[alt="Delightree"] { height: 26px; }
 
   /* Work section */
