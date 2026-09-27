@@ -202,8 +202,7 @@ img {
    Hero
    =========================== */
 .hero {
-  padding: 40px 0 38px;
-  border-bottom: 1px solid #ebebeb;
+  padding: 140px 0 0;
 }
 
 .hero-inner {
@@ -281,6 +280,7 @@ img {
   line-height: 1.06;
   letter-spacing: -2.5px;
   color: #1a1917;
+  max-width: 13em;
   margin-bottom: 16px;
 }
 
@@ -295,21 +295,21 @@ img {
 }
 
 .hero-metrics {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px 0;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 24px;
-  color: #1a1917;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
 }
 
-/* Hairline rules read as discrete cells; the padding carries the spacing. */
 .hero-metric {
-  white-space: nowrap;
-  padding: 0 24px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  color: #1a1917;
+  padding: 28px 32px 32px;
   border-left: 1px solid #ebebeb;
 }
 
@@ -318,15 +318,11 @@ img {
   border-left: none;
 }
 
-.hero-metric:last-child {
-  padding-right: 0;
-}
-
 .hero-ctas {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 40px;
+  margin-bottom: 56px;
 }
 
 .btn-primary {
@@ -377,9 +373,7 @@ img {
    Embedded Bar
    =========================== */
 .embedded-bar {
-  background: #fafafa;
-  border-bottom: 1px solid #f0f0f0;
-  padding: 10px 0;
+  padding: 36px 0 0;
 }
 
 .embedded-bar-inner {
@@ -388,34 +382,23 @@ img {
   gap: 28px;
 }
 
-.embedded-label {
-  display: none;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 400;
-  line-height: 1;
-  color: #807d78;
-  white-space: nowrap;
-  align-self: center;
-}
-
 .embedded-companies {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 24px 56px;
   flex-wrap: wrap;
 }
 
 .company-logo-wrap {
   display: inline-flex;
   align-items: center;
-  height: 22px;
+  height: 36px;
 }
 
 .company-logo {
-  height: 16px;
+  height: 20px;
   width: auto;
-  max-width: 100px;
+  max-width: 140px;
   filter: grayscale(1) opacity(0.4);
   transition: filter 0.2s ease;
 }
@@ -426,12 +409,22 @@ img {
 
 /* BharatPe SVG has a taller natural bounding box — scale up to match visual weight */
 .company-logo[alt="BharatPe"] {
-  height: 28px;
+  height: 30px;
+}
+
+.company-logo[alt="OYO"] {
+  height: 15px;
+}
+
+/* The mark dominates this file, so it needs more height to match the wordmarks. */
+.company-logo[alt="Delightree"] {
+  height: 34px;
 }
 
 .company-logo[alt="Medwing"],
 .company-logo[alt="Airfocus"],
-.company-logo[alt="BharatPe"] {
+.company-logo[alt="BharatPe"],
+.company-logo[alt="Delightree"] {
   filter: grayscale(1) opacity(0.65);
 }
 
@@ -1207,7 +1200,7 @@ img {
 
   /* Hero */
   .hero {
-    padding: 36px 0 40px;
+    padding: 72px 0 0;
   }
 
   .hero-heading {
@@ -1223,22 +1216,23 @@ img {
     margin-bottom: 28px;
   }
 
+  /* Stacked rows read better than two cramped columns at this width. */
   .hero-metrics {
-    font-size: 14px;
-    line-height: 21px;
-    gap: 6px 16px;
+    grid-template-columns: 1fr;
+    border-bottom: none;
   }
 
-  /* A wrapped line would otherwise open with a rule hanging off its left
-     edge, so spacing alone carries the grouping at this width. */
   .hero-metric {
-    padding: 0;
+    font-size: 24px;
+    letter-spacing: -0.5px;
+    padding: 16px 0;
     border-left: none;
+    border-bottom: 1px solid #ebebeb;
   }
 
   /* CTAs side by side */
   .hero-ctas {
-    margin-bottom: 28px;
+    margin-bottom: 40px;
     flex-direction: row;
     align-items: stretch;
     gap: 8px;
@@ -1252,30 +1246,21 @@ img {
     font-size: 13px;
   }
 
-  /* Embedded logos — hide label, single row */
+  /* Logos wrap to two rows rather than shrinking past legibility. */
   .embedded-bar {
-    padding: 12px 0;
-  }
-
-  .embedded-bar-inner {
-    justify-content: center;
-  }
-
-  .embedded-label {
-    display: none;
+    padding: 28px 0 0;
   }
 
   .embedded-companies {
-    gap: 20px;
-    flex-wrap: nowrap;
-    justify-content: center;
+    gap: 16px 32px;
   }
 
+  .company-logo-wrap { height: 28px; }
   .company-logo { height: 15px; }
-  .company-logo[alt="Medwing"]  { height: 13px; }
-  .company-logo[alt="Airfocus"] { height: 14px; }
-  .company-logo[alt="BharatPe"] { height: 20px; }
-  .company-logo[alt="OYO"]      { height: 11px; }
+  .company-logo[alt="Medwing"]    { height: 14px; }
+  .company-logo[alt="BharatPe"]   { height: 23px; }
+  .company-logo[alt="OYO"]        { height: 12px; }
+  .company-logo[alt="Delightree"] { height: 26px; }
 
   /* Work section */
   .work {
@@ -1543,11 +1528,10 @@ img {
 }
 
 /* Hero */
-[data-theme="dark"] .hero { border-bottom-color: #2e2c2a; }
 [data-theme="dark"] .hero-heading { color: #f0efe9; }
 [data-theme="dark"] .hero-subline { color: #9c9994; }
-[data-theme="dark"] .hero-metrics { color: #f0efe9; }
-[data-theme="dark"] .hero-metric { border-left-color: #2e2c2a; }
+[data-theme="dark"] .hero-metrics { border-color: #2e2c2a; }
+[data-theme="dark"] .hero-metric { color: #f0efe9; border-color: #2e2c2a; }
 [data-theme="dark"] .btn-primary {
   background: #f0efe9;
   color: #111110;
@@ -1558,14 +1542,10 @@ img {
 }
 
 /* Embedded bar */
-[data-theme="dark"] .embedded-bar {
-  background: #161513;
-  border-bottom-color: #2e2c2a;
-}
-[data-theme="dark"] .embedded-label { color: #6b6762; }
 [data-theme="dark"] .company-logo[alt="Medwing"],
 [data-theme="dark"] .company-logo[alt="Airfocus"],
-[data-theme="dark"] .company-logo[alt="BharatPe"] {
+[data-theme="dark"] .company-logo[alt="BharatPe"],
+[data-theme="dark"] .company-logo[alt="Delightree"] {
   filter: grayscale(1) invert(1) opacity(0.65);
 }
 [data-theme="dark"] .company-logo[alt="OYO"] {
