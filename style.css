@@ -297,55 +297,6 @@ img {
   margin-bottom: 40px;
 }
 
-/* Highlight: a hand-drawn loop around key words. Coral on dark; a deeper
-   mix of the same coral on white so the stroke keeps its contrast. */
-.hl-loop {
-  position: relative;
-  display: inline-block;
-  white-space: nowrap;
-  margin: 0 0.45em;
-}
-
-.hl-loop svg {
-  position: absolute;
-  left: -16%;
-  top: -22%;
-  width: 132%;
-  height: 144%;
-  overflow: visible;
-  pointer-events: none;
-}
-
-.hl-loop path {
-  fill: none;
-  stroke: #bf5f3e;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  vector-effect: non-scaling-stroke;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
-  animation: loopDraw 1s cubic-bezier(0.65, 0, 0.35, 1) 0.3s both;
-}
-
-/* The loop's own overhang already separates it from trailing punctuation. */
-.hl-loop + .hl-loop {
-  margin-right: 0.3em;
-}
-
-/* Stagger a second loop in the same line so the pair draws in sequence. */
-.hl-loop + .hl-loop path {
-  animation-delay: 0.6s;
-}
-
-@keyframes loopDraw {
-  from { stroke-dashoffset: 1; }
-  to   { stroke-dashoffset: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hl-loop path { animation: none; }
-}
-
 .hero-ctas {
   display: flex;
   align-items: center;
@@ -1551,7 +1502,6 @@ img {
 /* Hero */
 [data-theme="dark"] .hero-heading { color: #f0efe9; }
 [data-theme="dark"] .hero-subline { color: #9c9994; }
-[data-theme="dark"] .hl-loop path { stroke: #ff7a4d; }
 [data-theme="dark"] .btn-primary {
   background: #f0efe9;
   color: #111110;
