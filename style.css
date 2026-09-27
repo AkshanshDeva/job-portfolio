@@ -202,7 +202,8 @@ img {
    Hero
    =========================== */
 .hero {
-  padding: 140px 0 0;
+  padding: 96px 0 0;
+  text-align: center;
 }
 
 .hero-inner {
@@ -276,12 +277,12 @@ img {
 .hero-heading {
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
-  font-size: 88px;
+  font-size: 72px;
   line-height: 1.06;
-  letter-spacing: -2.5px;
+  letter-spacing: -2px;
   color: #1a1917;
   max-width: 13em;
-  margin-bottom: 16px;
+  margin: 0 auto 16px;
 }
 
 .hero-subline {
@@ -297,6 +298,7 @@ img {
 .hero-ctas {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 16px;
   margin-bottom: 56px;
 }
@@ -361,6 +363,7 @@ img {
 .embedded-companies {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 24px 56px;
   flex-wrap: wrap;
 }
@@ -1084,7 +1087,7 @@ img {
   }
 
   .hero-heading {
-    font-size: 56px;
+    font-size: 52px;
     letter-spacing: -1.5px;
   }
 
@@ -1176,13 +1179,13 @@ img {
 
   /* Hero */
   .hero {
-    padding: 72px 0 0;
+    padding: 56px 0 0;
   }
 
   .hero-heading {
-    font-size: 40px;
+    font-size: 36px;
     line-height: 1.08;
-    letter-spacing: -1.5px;
+    letter-spacing: -1px;
     margin-bottom: 12px;
   }
 
