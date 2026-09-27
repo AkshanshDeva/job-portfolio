@@ -294,30 +294,6 @@ img {
   margin-bottom: 40px;
 }
 
-.hero-metrics {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  border-top: 1px solid #ebebeb;
-  border-bottom: 1px solid #ebebeb;
-}
-
-.hero-metric {
-  font-family: 'Outfit', sans-serif;
-  font-weight: 700;
-  font-size: 36px;
-  line-height: 1.15;
-  letter-spacing: -1px;
-  color: #1a1917;
-  padding: 28px 32px 32px;
-  border-left: 1px solid #ebebeb;
-}
-
-.hero-metric:first-child {
-  padding-left: 0;
-  border-left: none;
-}
-
 .hero-ctas {
   display: flex;
   align-items: center;
@@ -1216,20 +1192,6 @@ img {
     margin-bottom: 28px;
   }
 
-  /* Stacked rows read better than two cramped columns at this width. */
-  .hero-metrics {
-    grid-template-columns: 1fr;
-    border-bottom: none;
-  }
-
-  .hero-metric {
-    font-size: 24px;
-    letter-spacing: -0.5px;
-    padding: 16px 0;
-    border-left: none;
-    border-bottom: 1px solid #ebebeb;
-  }
-
   /* CTAs side by side */
   .hero-ctas {
     margin-bottom: 40px;
@@ -1530,8 +1492,6 @@ img {
 /* Hero */
 [data-theme="dark"] .hero-heading { color: #f0efe9; }
 [data-theme="dark"] .hero-subline { color: #9c9994; }
-[data-theme="dark"] .hero-metrics { border-color: #2e2c2a; }
-[data-theme="dark"] .hero-metric { color: #f0efe9; border-color: #2e2c2a; }
 [data-theme="dark"] .btn-primary {
   background: #f0efe9;
   color: #111110;
