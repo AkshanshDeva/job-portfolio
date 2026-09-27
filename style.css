@@ -405,9 +405,13 @@ img {
 
 .company-logo[alt="Medwing"],
 .company-logo[alt="Airfocus"],
-.company-logo[alt="BharatPe"],
-.company-logo[alt="Delightree"] {
+.company-logo[alt="BharatPe"] {
   filter: grayscale(1) opacity(0.65);
+}
+
+/* Its large solid mark reads heavier than the wordmarks at the same opacity. */
+.company-logo[alt="Delightree"] {
+  filter: grayscale(1) opacity(0.5);
 }
 
 .company-logo[alt="OYO"] {
@@ -1510,9 +1514,11 @@ img {
 /* Embedded bar */
 [data-theme="dark"] .company-logo[alt="Medwing"],
 [data-theme="dark"] .company-logo[alt="Airfocus"],
-[data-theme="dark"] .company-logo[alt="BharatPe"],
-[data-theme="dark"] .company-logo[alt="Delightree"] {
+[data-theme="dark"] .company-logo[alt="BharatPe"] {
   filter: grayscale(1) invert(1) opacity(0.65);
+}
+[data-theme="dark"] .company-logo[alt="Delightree"] {
+  filter: grayscale(1) invert(1) opacity(0.5);
 }
 [data-theme="dark"] .company-logo[alt="OYO"] {
   filter: grayscale(1) invert(1) opacity(0.4);
