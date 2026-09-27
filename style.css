@@ -111,7 +111,7 @@ img {
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
   font-weight: 400;
-  color: #b0aca5;
+  color: #6b6762;
   line-height: 19.5px;
   transition: color 0.2s ease;
 }
@@ -1507,7 +1507,7 @@ img {
 
 /* Nav */
 [data-theme="dark"] .nav-name { color: #f0efe9; }
-[data-theme="dark"] .nav-link { color: #9c9994; }
+[data-theme="dark"] .nav-link { color: #d4d2cc; }
 [data-theme="dark"] .nav-link:hover,
 [data-theme="dark"] .nav-link.active { color: #f0efe9; }
 [data-theme="dark"] .nav.scrolled {
