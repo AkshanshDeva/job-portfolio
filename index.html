@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Akshansh Deva — Product Designer</title>
-  <meta name="description" content="8+ years designing digital products for B2B SaaS, travel, fintech, healthcare.">
+  <meta name="description" content="Product design that moves core business metrics. Growth design and design for AI, for teams that need both.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@300;400;700;800&family=Fraunces:ital,opsz,wght@1,9..144,400&family=Playfair+Display:ital@1&family=Montserrat:wght@400&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@
         <div class="nav-ghost-btns">
           <button class="btn-nav-ghost" id="navCopyEmail">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            <span id="navCopyEmailText">Copy email</span>
+            <span id="navCopyEmailText" aria-live="polite">Copy email</span>
           </button>
           <a href="#contact" class="btn-nav-cta">Discuss a project</a>
         </div>
@@ -50,25 +50,20 @@
     <!-- Hero -->
     <section class="hero" id="hero">
       <div class="container">
-        <!-- COPY PENDING: availability line -->
-        <p class="hero-availability">
-          <span class="availability-dot" aria-hidden="true"></span>
-          <span>[Availability line]</span>
-        </p>
-        <!-- COPY PENDING: positioning line naming both verticals -->
-        <h1 class="hero-heading">[Positioning line that names growth design and design for AI, around twelve words]</h1>
+        <h1 class="hero-heading">Product design that moves core business metrics</h1>
+        <p class="hero-subline">Growth design and design for AI, for teams that need both.</p>
         <div class="hero-ctas" id="heroCtas">
           <a href="#contact" class="btn-primary">Discuss a project</a>
           <button class="btn-outline" id="copyEmail">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            <span id="copyEmailText">Copy email</span>
+            <span id="copyEmailText" aria-live="polite">Copy email</span>
           </button>
         </div>
         <!-- Metrics stay here until the metrics-strip pass moves them below the trusted-by strip. -->
         <p class="hero-metrics">
           <span class="hero-metric">$0 &#8594; $1M ARR</span>
           <span class="hero-metric">Onboarding 50% &#8594; 65%</span>
-          <span class="hero-metric">17% of signups from existing accounts</span>
+          <span class="hero-metric">17% of new business from existing accounts</span>
         </p>
       </div>
     </section>
@@ -356,6 +351,7 @@
         <div class="footer-main">
           <div class="footer-left">
             <h2 class="footer-heading">Let's work<br>together.</h2>
+            <p class="footer-invite">Taking on one or two new projects at a time. Tell me what you're working on.</p>
             <div class="footer-contact-links">
               <a href="https://www.linkedin.com/in/akshansh-deva/" target="_blank" rel="noopener" class="footer-contact-link">LinkedIn &#8599;</a>
               <a href="assets/akshansh-deva-resume.pdf" class="footer-contact-link" target="_blank" rel="noopener">Resume &#8595;</a>
@@ -366,13 +362,6 @@
                 </button>
               </span>
             </div>
-          </div>
-          <div class="footer-right">
-            <div class="footer-availability">
-              <span class="footer-availability-dot"></span>
-              <span class="footer-availability-text">Available for new roles</span>
-            </div>
-            <p class="footer-desc">I'm currently open to full-time and contract opportunities. If you need a product designer who can hit the ground running, I'd love to hear what you're building.</p>
           </div>
         </div>
         <div class="footer-bottom">
@@ -413,15 +402,52 @@
       }, 3000);
     }
 
-    // Copy email (hero + nav ghost)
-    function doCopyEmail() {
-      navigator.clipboard.writeText('akshanshdeva@gmail.com').then(function() {
-        showSnackbar();
+    // Copy email. Labelled buttons confirm in place; the icon-only footer button uses the snackbar.
+    var EMAIL = 'akshanshdeva@gmail.com';
+
+    function legacyCopy(text) {
+      return new Promise(function(resolve, reject) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        ok ? resolve() : reject();
       });
     }
-    document.getElementById('copyEmail').addEventListener('click', doCopyEmail);
-    document.getElementById('navCopyEmail').addEventListener('click', doCopyEmail);
-    document.getElementById('footerCopyEmail').addEventListener('click', doCopyEmail);
+
+    function writeClipboard(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text).catch(function() { return legacyCopy(text); });
+      }
+      return legacyCopy(text);
+    }
+
+    function wireCopyButton(btnId, labelId) {
+      var btn = document.getElementById(btnId);
+      var label = document.getElementById(labelId);
+      var original = label.textContent;
+      btn.addEventListener('click', function() {
+        writeClipboard(EMAIL).then(function() {
+          label.textContent = 'Copied';
+          btn.classList.add('is-copied');
+          clearTimeout(btn._resetTimer);
+          btn._resetTimer = setTimeout(function() {
+            label.textContent = original;
+            btn.classList.remove('is-copied');
+          }, 2000);
+        });
+      });
+    }
+    wireCopyButton('copyEmail', 'copyEmailText');
+    wireCopyButton('navCopyEmail', 'navCopyEmailText');
+    document.getElementById('footerCopyEmail').addEventListener('click', function() {
+      writeClipboard(EMAIL).then(showSnackbar);
+    });
 
 
     // Glassy nav on scroll
