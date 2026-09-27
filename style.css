@@ -283,6 +283,8 @@ img {
   color: #1a1917;
   max-width: 13em;
   margin: 0 auto 16px;
+  /* Centred lines need even lengths, or the last word strands on its own. */
+  text-wrap: balance;
 }
 
 .hero-subline {
@@ -357,6 +359,7 @@ img {
 .embedded-bar-inner {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 28px;
 }
 
