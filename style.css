@@ -138,13 +138,19 @@ img {
   max-width: 0;
   overflow: hidden;
   opacity: 0;
+  /* Hidden buttons must not take keyboard focus. */
+  visibility: hidden;
   transition: max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 0.3s ease;
+              opacity 0.3s ease,
+              visibility 0s linear 0.45s;
 }
 
+/* Both nav CTAs repeat the hero's, so they only appear once those scroll away. */
 .nav.ctas-hidden .nav-ghost-btns {
-  max-width: 160px;
+  max-width: 320px;
   opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
 }
 
 .btn-nav-ghost {
@@ -170,10 +176,7 @@ img {
   box-shadow: 0 4px 14px rgba(0,0,0,0.08);
 }
 
-.btn-resume-short { display: none; }
-.btn-resume-full { display: inline; }
-
-.btn-resume {
+.btn-nav-cta {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -190,7 +193,7 @@ img {
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.btn-resume:hover {
+.btn-nav-cta:hover {
   transform: scale(1.07);
   box-shadow: 0 4px 14px rgba(0,0,0,0.08);
 }
@@ -271,7 +274,10 @@ img {
   filter: grayscale(1) opacity(0.4);
 }
 
-.hero-greeting {
+.hero-availability {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
   font-weight: 400;
@@ -281,69 +287,24 @@ img {
   margin-bottom: 24px;
 }
 
-.hero-heading {
-  margin-bottom: 40px;
+/* Shared with the footer availability line. */
+.availability-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4caf50;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.25);
 }
 
-.hero-line-dark,
-.hero-line-third {
-  display: block;
+.hero-heading {
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
   font-size: 88px;
   line-height: 1.06;
   letter-spacing: -2.5px;
-}
-
-.hero-line-dark {
   color: #1a1917;
-}
-
-.hero-line-third {
-  display: flex;
-  align-items: flex-end;
-  gap: 0.22em;
-}
-
-.hero-for {
-  color: #1a1917;
-  flex-shrink: 0;
-}
-
-@keyframes cycleWordIn {
-  from { opacity: 0; transform: translateY(55%); }
-  to   { opacity: 1; transform: translateY(0);   }
-}
-
-@keyframes cycleWordOut {
-  from { opacity: 1; transform: translateY(0);    }
-  to   { opacity: 0; transform: translateY(-55%); }
-}
-
-.hero-cycle-wrap {
-  display: block;
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  height: 1.08em;
-}
-
-.hero-cycle-word {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  opacity: 0;
-  transform: translateY(55%);
-  white-space: nowrap;
-  color: #b0aca5;
-}
-
-.hero-cycle-word.entering {
-  animation: cycleWordIn 0.5s cubic-bezier(0, 0, 0.2, 1) forwards;
-}
-
-.hero-cycle-word.exiting {
-  animation: cycleWordOut 0.32s cubic-bezier(0.4, 0, 1, 1) forwards;
+  margin-bottom: 40px;
 }
 
 .hero-metrics {
@@ -378,17 +339,7 @@ img {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 16px;
-}
-
-.hero-vibe {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 400;
-  color: #807d78;
-  letter-spacing: 0.2px;
-  line-height: 17px;
-  margin-bottom: 28px;
+  margin-bottom: 40px;
 }
 
 .btn-primary {
@@ -417,6 +368,7 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 6px;
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
   font-weight: 600;
@@ -1206,8 +1158,7 @@ img {
     padding: 0 40px;
   }
 
-  .hero-line-dark,
-  .hero-line-third {
+  .hero-heading {
     font-size: 56px;
     letter-spacing: -1.5px;
   }
@@ -1287,36 +1238,15 @@ img {
     font-size: 16px;
   }
 
-  /* Shorten Resume button label on mobile */
-  .btn-resume-full { display: none; }
-  .btn-resume-short { display: inline; }
-  .btn-resume {
+  .btn-nav-cta {
     padding: 0 12px;
     font-size: 12px;
     height: 32px;
   }
 
-  /* Mobile: ghost btn hidden by default, swaps with Resume on scroll */
-  .nav-ghost-btns {
-    display: none;
-  }
-  .nav.ctas-hidden .nav-ghost-btns {
-    display: flex;
-    max-width: 160px;
-    opacity: 1;
-  }
-  .nav.ctas-hidden .btn-resume {
-    display: none;
-  }
-
-  /* Copy email style on mobile */
+  /* Mobile: no room for the copy-email ghost, so only the project CTA slides in. */
   #navCopyEmail {
-    background: transparent;
-    color: #1a1917;
-    border: 1px solid rgba(26, 25, 23, 0.25);
-    height: 32px;
-    padding: 0 12px;
-    font-size: 12px;
+    display: none;
   }
 
   /* Hero */
@@ -1324,17 +1254,16 @@ img {
     padding: 36px 0 40px;
   }
 
-  .hero-greeting {
+  .hero-availability {
     font-size: 12px;
     margin-bottom: 16px;
   }
 
   .hero-heading {
+    font-size: 40px;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
     margin-bottom: 28px;
-  }
-
-  .hero-vibe {
-    margin-bottom: 22px;
   }
 
   .hero-metrics {
@@ -1350,15 +1279,9 @@ img {
     border-left: none;
   }
 
-  .hero-line-dark,
-  .hero-line-third {
-    font-size: 40px;
-    line-height: 1.08;
-    letter-spacing: -1.5px;
-  }
-
   /* CTAs side by side */
   .hero-ctas {
+    margin-bottom: 28px;
     flex-direction: row;
     align-items: stretch;
     gap: 8px;
@@ -1657,7 +1580,7 @@ img {
   color: #f0efe9;
   border-color: #2e2c2a;
 }
-[data-theme="dark"] .btn-resume {
+[data-theme="dark"] .btn-nav-cta {
   color: #f0efe9;
   border-color: rgba(240, 239, 233, 0.35);
 }
@@ -1668,10 +1591,8 @@ img {
 
 /* Hero */
 [data-theme="dark"] .hero { border-bottom-color: #2e2c2a; }
-[data-theme="dark"] .hero-line-dark { color: #f0efe9; }
-[data-theme="dark"] .hero-for { color: #f0efe9; }
-[data-theme="dark"] .hero-cycle-word { color: #6b6762; }
-[data-theme="dark"] .hero-vibe { color: #6b6762; }
+[data-theme="dark"] .hero-heading { color: #f0efe9; }
+[data-theme="dark"] .hero-availability { color: #9c9994; }
 [data-theme="dark"] .hero-metrics { color: #f0efe9; }
 [data-theme="dark"] .hero-metric { border-left-color: #2e2c2a; }
 [data-theme="dark"] .btn-primary {

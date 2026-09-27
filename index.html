@@ -26,21 +26,17 @@
       <a href="/" class="nav-name">Akshansh Deva</a>
       <div class="nav-links">
         <a href="#work" class="nav-link active">Work</a>
+        <a href="writing/" class="nav-link">Writing</a>
         <a href="#about" class="nav-link">About</a>
-        <a href="#contact" class="nav-link">Contact</a>
       </div>
       <div class="nav-actions">
         <div class="nav-ghost-btns">
           <button class="btn-nav-ghost" id="navCopyEmail">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            <span id="navCopyEmailText">Copy email ID</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <span id="navCopyEmailText">Copy email</span>
           </button>
+          <a href="#contact" class="btn-nav-cta">Discuss a project</a>
         </div>
-        <a href="assets/akshansh-deva-resume.pdf" class="btn-resume" target="_blank" rel="noopener">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span class="btn-resume-full">Download Resume</span>
-          <span class="btn-resume-short">Resume</span>
-        </a>
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -52,28 +48,23 @@
   <main>
 
     <!-- Hero -->
-    <section class="hero">
+    <section class="hero" id="hero">
       <div class="container">
-        <h1 class="hero-heading">
-          <span class="hero-line-dark">8+ years designing</span>
-          <span class="hero-line-dark">digital products</span>
-          <span class="hero-line-third">
-            <span class="hero-for">for </span><span class="hero-cycle-wrap">
-              <span class="hero-cycle-word">B2B SaaS.</span>
-              <span class="hero-cycle-word">fintech.</span>
-              <span class="hero-cycle-word">healthcare.</span>
-              <span class="hero-cycle-word">travel.</span>
-            </span>
-          </span>
-        </h1>
+        <!-- COPY PENDING: availability line -->
+        <p class="hero-availability">
+          <span class="availability-dot" aria-hidden="true"></span>
+          <span>[Availability line]</span>
+        </p>
+        <!-- COPY PENDING: positioning line naming both verticals -->
+        <h1 class="hero-heading">[Positioning line that names growth design and design for AI, around twelve words]</h1>
         <div class="hero-ctas" id="heroCtas">
-          <button class="btn-primary" id="copyEmail">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            <span id="copyEmailText">Copy email ID</span>
+          <a href="#contact" class="btn-primary">Discuss a project</a>
+          <button class="btn-outline" id="copyEmail">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <span id="copyEmailText">Copy email</span>
           </button>
-          <a href="https://www.linkedin.com/in/akshansh-deva/" class="btn-outline" target="_blank" rel="noopener">LinkedIn &#8599;</a>
         </div>
-        <p class="hero-vibe">Designed and built with Claude Code &amp; Figma MCP</p>
+        <!-- Metrics stay here until the metrics-strip pass moves them below the trusted-by strip. -->
         <p class="hero-metrics">
           <span class="hero-metric">$0 &#8594; $1M ARR</span>
           <span class="hero-metric">Onboarding 50% &#8594; 65%</span>
@@ -463,31 +454,6 @@
         });
       }, { threshold: 0 });
       observer.observe(heroCtas);
-    })();
-
-    // Hero category cycler
-    (function() {
-      var words = document.querySelectorAll('.hero-cycle-word');
-      if (!words.length) return;
-      var current = 0;
-      words[0].classList.add('entering');
-
-      function advance() {
-        var prev = current;
-        current = (current + 1) % words.length;
-
-        // Step 1: exit the current word
-        words[prev].classList.remove('entering');
-        words[prev].classList.add('exiting');
-
-        // Step 2: only after exit finishes, bring in the next word
-        setTimeout(function() {
-          words[prev].classList.remove('exiting');
-          words[current].classList.add('entering');
-        }, 340); // slightly longer than exit duration (320ms) so it's fully gone
-      }
-
-      setInterval(advance, 2000);
     })();
 
     // Photo tilt + grayscale→colour
