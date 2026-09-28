@@ -278,9 +278,9 @@ img {
 .hero-heading {
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
-  font-size: 112px;
+  font-size: 128px;
   line-height: 1;
-  letter-spacing: -3.5px;
+  letter-spacing: -4px;
   color: #1a1917;
   margin-bottom: 56px;
   /* Even line lengths, so no word strands on its own. */
