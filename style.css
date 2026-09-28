@@ -737,10 +737,19 @@ img {
   padding: 60px 0 64px;
 }
 
+/* Intro on the left, resume button on the right, sharing a baseline edge. */
+.experience-intro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+}
+
 .experience-actions {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .experience-aside p {
@@ -1288,6 +1297,13 @@ img {
 
   .experience-section {
     padding: 40px 0 48px;
+  }
+
+  /* Too narrow to share a row: the button drops under the intro. */
+  .experience-intro {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
   }
 
   /* Keep the resume button at its natural width rather than full-row. */
