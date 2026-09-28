@@ -59,6 +59,12 @@ img {
   padding: 0 64px;
 }
 
+/* Anchor jumps stop below the 60px sticky nav instead of under it. */
+section[id],
+footer[id] {
+  scroll-margin-top: 60px;
+}
+
 /* ===========================
    Navigation
    =========================== */
@@ -1215,9 +1221,11 @@ img {
   }
 
   /* Mobile: no room for the copy-email ghost, so only the project CTA slides in. */
-  /* Both scroll-in CTAs live in the phone menu instead. */
+  /* Both scroll-in CTAs live in the phone menu instead; the Writing page's
+     always-on CTA does too. */
   .nav-ghost-btns,
-  .nav.ctas-hidden .nav-ghost-btns {
+  .nav.ctas-hidden .nav-ghost-btns,
+  .nav-actions > .btn-nav-cta {
     display: none;
   }
 
