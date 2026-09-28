@@ -35,21 +35,26 @@
         </button>
       </div>
     </div>
-    <div class="nav-menu" id="navMenu" hidden>
-      <div class="nav-menu-links">
-        <a href="../#work" class="nav-menu-link">Work</a>
-        <a href="./" class="nav-menu-link" aria-current="page">Writing</a>
-        <a href="../#about" class="nav-menu-link">About</a>
-      </div>
-      <div class="nav-menu-ctas">
-        <a href="../#contact" class="btn-primary">Discuss a project</a>
-        <button class="btn-outline" id="menuCopyEmail">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-          <span id="menuCopyEmailText" aria-live="polite">Copy email</span>
-        </button>
-      </div>
-    </div>
   </nav>
+
+  <!-- Phone menu: a bottom sheet over a scrim. Lives outside the nav because the
+       nav's backdrop-filter would otherwise trap these fixed elements inside it. -->
+  <div class="nav-scrim" id="navScrim" aria-hidden="true"></div>
+  <div class="nav-menu" id="navMenu" role="dialog" aria-label="Menu">
+    <div class="nav-menu-handle" aria-hidden="true"></div>
+    <div class="nav-menu-links">
+      <a href="../#work" class="nav-menu-link">Work</a>
+      <a href="./" class="nav-menu-link" aria-current="page">Writing</a>
+      <a href="../#about" class="nav-menu-link">About</a>
+    </div>
+    <div class="nav-menu-ctas">
+      <a href="../#contact" class="btn-primary">Discuss a project</a>
+      <button class="btn-outline" id="menuCopyEmail">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        <span id="menuCopyEmailText" aria-live="polite">Copy email</span>
+      </button>
+    </div>
+  </div>
 
   <main>
     <section class="work">

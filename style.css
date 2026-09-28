@@ -1553,20 +1553,73 @@ footer[id] {
   display: block;
 }
 
-/* Drops under the 60px bar, full width, solid so page content never shows through. */
-.nav-menu {
-  position: absolute;
-  top: 60px;
-  left: 0;
-  right: 0;
-  background: #fff;
-  border-bottom: 1px solid #ebebeb;
-  padding: 4px 20px 24px;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+/* Bottom sheet: slides up from the bottom edge over a dimmed scrim. Closed
+   states use visibility so hidden links can't take focus. */
+.nav-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 190;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
 }
 
-.nav-menu[hidden] {
-  display: none;
+.nav-scrim.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease;
+}
+
+.nav-menu {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 200;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 10px 20px calc(24px + env(safe-area-inset-bottom));
+  box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.14);
+  transform: translateY(100%);
+  visibility: hidden;
+  transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.36s;
+}
+
+.nav-menu.is-open {
+  transform: translateY(0);
+  visibility: visible;
+  transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* While a finger drags the sheet, it tracks 1:1 with no easing. */
+.nav-menu.is-dragging {
+  transition: none;
+}
+
+.nav-menu-handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: #d4d2cc;
+  margin: 0 auto 8px;
+}
+
+/* Desktop never shows the sheet, even if it was left open at phone width. */
+@media (min-width: 641px) {
+  .nav-scrim,
+  .nav-menu {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-scrim,
+  .nav-menu,
+  .nav-scrim.is-open,
+  .nav-menu.is-open {
+    transition: none;
+  }
 }
 
 .nav-menu-links {
@@ -1599,11 +1652,6 @@ footer[id] {
   width: 100%;
   height: 44px;
   justify-content: center;
-}
-
-/* Keep the bar solid while the menu hangs off it. */
-.nav.menu-open {
-  background: #fff;
 }
 
 /* After the base rule above, so it wins at phone width. */
@@ -1654,11 +1702,12 @@ footer[id] {
   color: #f0efe9;
   border-color: rgba(240, 239, 233, 0.35);
 }
-[data-theme="dark"] .nav-menu,
-[data-theme="dark"] .nav.menu-open {
-  background: #111110;
-  border-bottom-color: #2e2c2a;
+[data-theme="dark"] .nav-menu {
+  background: #1a1917;
+  box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.5);
 }
+[data-theme="dark"] .nav-scrim { background: rgba(0, 0, 0, 0.6); }
+[data-theme="dark"] .nav-menu-handle { background: #3a3836; }
 [data-theme="dark"] .nav-menu-link {
   color: #f0efe9;
   border-bottom-color: #2e2c2a;
