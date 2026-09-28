@@ -638,15 +638,15 @@ img {
 .chip {
   display: inline-flex;
   align-items: center;
-  padding: 3px 8px;
-  height: 21px;
+  padding: 4px 9px;
+  height: 24px;
   background: #ededed;
   border-radius: 4px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  line-height: 15px;
+  line-height: 16px;
   color: #807d78;
 }
 
@@ -1510,7 +1510,7 @@ img {
 [data-theme="dark"] .work-row-cta { color: #f0efe9; border-color: rgba(240, 239, 233, 0.25); }
 [data-theme="dark"] .work-row:hover .work-row-cta { border-color: rgba(240, 239, 233, 0.5); background: rgba(240, 239, 233, 0.05); }
 [data-theme="dark"] .work-row-image { background: #1e1c1a; }
-[data-theme="dark"] .chip { background: #2a2826; color: #9c9994; }
+[data-theme="dark"] .chip { background: #3a3836; color: #d4d2cc; }
 [data-theme="dark"] .chip-positive { background: #0f2e0f; color: #4caf50; }
 [data-theme="dark"] .chip-negative { background: #2e0f0f; color: #e57373; }
 
