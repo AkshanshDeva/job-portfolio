@@ -1270,6 +1270,13 @@ footer[id] {
     font-size: 13px;
   }
 
+  /* Both hero CTAs share the row; tighter padding keeps the LinkedIn label on one line. */
+  .hero-ctas .btn-primary,
+  .hero-ctas .btn-outline {
+    padding: 0 12px;
+    white-space: nowrap;
+  }
+
   /* Specialisms stack */
   .specialize {
     padding: 48px 0 16px;

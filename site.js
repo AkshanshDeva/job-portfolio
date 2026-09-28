@@ -99,6 +99,11 @@ function wireCopyButton(btnId, labelId) {
   });
 })();
 
+// Copy buttons that exist on more than one page. The homepage wires its own
+// hero, nav and footer buttons inline.
 if (document.getElementById('menuCopyEmail')) {
   wireCopyButton('menuCopyEmail', 'menuCopyEmailText');
+}
+if (document.getElementById('pageNavCopyEmail')) {
+  wireCopyButton('pageNavCopyEmail', 'pageNavCopyEmailText');
 }
