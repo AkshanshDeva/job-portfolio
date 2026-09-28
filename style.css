@@ -187,6 +187,8 @@ img {
   font-weight: 600;
   letter-spacing: 0.1px;
   line-height: 18px;
+  /* The nav group animates its width open, so the label must not wrap mid-slide. */
+  white-space: nowrap;
   padding: 0 20px;
   height: 36px;
   border-radius: 8px;
