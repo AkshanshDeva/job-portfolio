@@ -352,6 +352,58 @@ img {
 }
 
 /* ===========================
+   Specialisms
+   =========================== */
+.specialize {
+  padding: 24px 0 24px;
+}
+
+.specialize-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+/* Hairline-bordered cards in the Work rows' type scale; the proof line
+   sits under a rule at the foot so both cards end on the same line. */
+.specialize-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 36px 36px 28px;
+  border: 1px solid #ebebeb;
+  border-radius: 14px;
+}
+
+.specialize-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.6px;
+  color: #1a1917;
+}
+
+.specialize-body {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 26px;
+  color: #4a4843;
+}
+
+.specialize-proof {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #ebebeb;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #807d78;
+}
+
+/* ===========================
    Embedded Bar
    =========================== */
 .embedded-bar {
@@ -1219,6 +1271,36 @@ img {
     font-size: 13px;
   }
 
+  /* Specialisms stack */
+  .specialize {
+    padding: 8px 0 16px;
+  }
+
+  .specialize-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .specialize-card {
+    padding: 24px 20px 20px;
+    gap: 12px;
+  }
+
+  .specialize-title {
+    font-size: 22px;
+    line-height: 1.25;
+    letter-spacing: -0.3px;
+  }
+
+  .specialize-body {
+    font-size: 15px;
+    line-height: 24px;
+  }
+
+  .specialize-proof {
+    padding-top: 12px;
+  }
+
   /* Logos wrap to two rows rather than shrinking past legibility. */
   .embedded-bar {
     padding: 28px 0 0;
@@ -1515,6 +1597,12 @@ img {
   color: #f0efe9;
   border-color: rgba(240, 239, 233, 0.35);
 }
+
+/* Specialisms */
+[data-theme="dark"] .specialize-card { border-color: #2e2c2a; }
+[data-theme="dark"] .specialize-title { color: #f0efe9; }
+[data-theme="dark"] .specialize-body { color: #9c9994; }
+[data-theme="dark"] .specialize-proof { color: #807d78; border-top-color: #2e2c2a; }
 
 /* Embedded bar */
 [data-theme="dark"] .company-logo[alt="Medwing"],
