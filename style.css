@@ -727,18 +727,42 @@ img {
 .experience-grid {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
 }
 
 .experience-aside {
   max-width: 640px;
 }
 
+/* Same hairline and rhythm as the rules between the page's other sections. */
+.experience-section {
+  border-top: 1px solid #ebebeb;
+  padding-top: 60px;
+}
+
+/* Resume on the left, the accordion trigger on the right. */
 .experience-actions {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
   gap: 12px;
-  margin-top: 24px;
+}
+
+.exp-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #807d78;
+  transition: color 0.2s ease;
+}
+
+.exp-toggle:hover,
+.exp-toggle[aria-expanded="true"] {
+  color: #1a1917;
 }
 
 .exp-toggle-icon {
@@ -1297,6 +1321,16 @@ img {
     padding: 40px 0 48px;
   }
 
+  .experience-section {
+    padding-top: 40px;
+  }
+
+  /* Keep the resume button at its natural width so the toggle keeps its side. */
+  .experience-actions .btn-outline {
+    flex: none;
+    padding: 0 18px;
+  }
+
   .about-bio p {
     font-size: 20px;
     line-height: 32px;
@@ -1537,6 +1571,10 @@ img {
 
 /* Experience */
 [data-theme="dark"] .experience-aside p { color: #9c9994; }
+[data-theme="dark"] .experience-section { border-top-color: #2e2c2a; }
+[data-theme="dark"] .exp-toggle { color: #9c9994; }
+[data-theme="dark"] .exp-toggle:hover,
+[data-theme="dark"] .exp-toggle[aria-expanded="true"] { color: #f0efe9; }
 [data-theme="dark"] .exp-row { border-color: #2e2c2a; }
 [data-theme="dark"] .exp-company { color: #f0efe9; }
 [data-theme="dark"] .exp-role { color: #9c9994; }
