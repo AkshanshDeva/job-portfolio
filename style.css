@@ -355,6 +355,74 @@ footer[id] {
 }
 
 /* ===========================
+   Contact
+   =========================== */
+/* A plain full stop before the footer: heading, one line, the address, a fallback. */
+.contact-section {
+  padding: 60px 0 72px;
+  border-top: 1px solid #ebebeb;
+}
+
+.contact-lede {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 28px;
+  color: #4a4843;
+  max-width: 560px;
+  margin-bottom: 28px;
+}
+
+.contact-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 16px;
+  margin-bottom: 14px;
+}
+
+/* The address is the button: click copies it, and the label swaps to "Copied"
+   exactly like the hero button. */
+.contact-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.8px;
+  color: #1a1917;
+  border-bottom: 2px solid rgba(26, 25, 23, 0.25);
+  padding-bottom: 2px;
+  transition: border-color 0.2s ease;
+}
+
+.contact-email:hover {
+  border-bottom-color: currentColor;
+}
+
+.contact-email svg {
+  flex-shrink: 0;
+  opacity: 0.55;
+}
+
+.contact-note,
+.contact-alt {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #807d78;
+}
+
+.contact-alt a {
+  color: #1a1917;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ===========================
    Specialisms
    =========================== */
 .specialize {
@@ -1263,6 +1331,39 @@ footer[id] {
     font-size: 13px;
   }
 
+  /* Contact */
+  .contact-section {
+    padding: 40px 0 48px;
+  }
+
+  .contact-lede {
+    font-size: 16px;
+    line-height: 25px;
+    margin-bottom: 20px;
+  }
+
+  .contact-email {
+    font-size: 22px;
+    letter-spacing: -0.3px;
+  }
+
+  .contact-email svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .contact-note,
+  .contact-alt {
+    font-size: 15px;
+  }
+
+  /* Both CTAs share the row; tighter padding keeps the LinkedIn label on one line. */
+  .hero-ctas .btn-primary,
+  .hero-ctas .btn-outline {
+    padding: 0 12px;
+    white-space: nowrap;
+  }
+
   /* Specialisms stack */
   .specialize {
     padding: 48px 0 16px;
@@ -1728,6 +1829,15 @@ footer[id] {
   color: #f0efe9;
   border-color: rgba(240, 239, 233, 0.35);
 }
+
+/* Contact */
+[data-theme="dark"] .contact-section { border-top-color: #2e2c2a; }
+[data-theme="dark"] .contact-lede { color: #9c9994; }
+[data-theme="dark"] .contact-email { color: #f0efe9; border-bottom-color: rgba(240, 239, 233, 0.25); }
+[data-theme="dark"] .contact-email:hover { border-bottom-color: currentColor; }
+[data-theme="dark"] .contact-note,
+[data-theme="dark"] .contact-alt { color: #9c9994; }
+[data-theme="dark"] .contact-alt a { color: #f0efe9; }
 
 /* Specialisms */
 [data-theme="dark"] .specialize-card { border-color: #2e2c2a; }

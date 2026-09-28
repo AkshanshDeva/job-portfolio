@@ -78,11 +78,11 @@
         <!-- Statement, then one proof row: CTAs left, past companies right. -->
         <div class="hero-row">
           <div class="hero-ctas" id="heroCtas">
-            <a href="#contact" class="btn-primary">Discuss a project</a>
-            <button class="btn-outline" id="copyEmail">
+            <button class="btn-primary" id="copyEmail">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
               <span id="copyEmailText" aria-live="polite">Copy email</span>
             </button>
+            <a href="https://www.linkedin.com/in/akshansh-deva/" class="btn-outline" target="_blank" rel="noopener">Message on LinkedIn</a>
           </div>
           <div class="embedded-companies" role="group" aria-label="Previously at">
             <div class="company-logo-wrap"><img src="assets/logos/oyo.svg" alt="OYO" class="company-logo"><span class="company-logo-fallback">OYO</span></div>
@@ -403,7 +403,22 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer" id="contact">
+    <!-- Contact: plain closing section, no form. -->
+    <section class="contact-section" id="contact">
+      <div class="container">
+        <h2 class="section-label-b">Discuss a project</h2>
+        <p class="contact-lede">Available for fixed-scope projects or embedded work with your team, both on a day rate.</p>
+        <p class="contact-line">
+          <button class="contact-email" id="contactCopyEmail" aria-label="Copy email address, akshanshdeva@gmail.com">
+            <span id="contactCopyEmailText" aria-live="polite">akshanshdeva@gmail.com</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          </button><span class="contact-note">I reply within a day.</span>
+        </p>
+        <p class="contact-alt">Or <a href="https://www.linkedin.com/in/akshansh-deva/" target="_blank" rel="noopener">message me on LinkedIn</a> if that's easier.</p>
+      </div>
+    </section>
+
+    <footer class="footer">
       <div class="container">
         <div class="footer-main">
           <div class="footer-left">
@@ -465,6 +480,7 @@
     // the icon-only footer button uses the snackbar.
     wireCopyButton('copyEmail', 'copyEmailText');
     wireCopyButton('navCopyEmail', 'navCopyEmailText');
+    wireCopyButton('contactCopyEmail', 'contactCopyEmailText');
     document.getElementById('footerCopyEmail').addEventListener('click', function() {
       writeClipboard(EMAIL).then(showSnackbar);
     });
