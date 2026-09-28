@@ -204,8 +204,7 @@ img {
    Hero
    =========================== */
 .hero {
-  padding: 96px 0 0;
-  text-align: center;
+  padding: 104px 0 0;
 }
 
 .hero-inner {
@@ -279,22 +278,30 @@ img {
 .hero-heading {
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
-  font-size: 72px;
-  line-height: 1.06;
-  letter-spacing: -2px;
+  font-size: 112px;
+  line-height: 1;
+  letter-spacing: -3.5px;
   color: #1a1917;
-  max-width: 13em;
-  margin: 0 auto 40px;
-  /* Centred lines need even lengths, or the last word strands on its own. */
+  margin-bottom: 56px;
+  /* Even line lengths, so no word strands on its own. */
   text-wrap: balance;
+}
+
+/* One proof row under a hairline: CTAs left, past companies right. */
+.hero-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  border-top: 1px solid #ebebeb;
+  padding-top: 28px;
 }
 
 .hero-ctas {
   display: flex;
   align-items: center;
-  justify-content: center;
+  flex-shrink: 0;
   gap: 12px;
-  margin-bottom: 56px;
 }
 
 .btn-primary {
@@ -345,7 +352,7 @@ img {
    Specialisms
    =========================== */
 .specialize {
-  padding: 60px 0 24px;
+  padding: 88px 0 24px;
 }
 
 .specialize-grid {
@@ -384,23 +391,10 @@ img {
 /* ===========================
    Embedded Bar
    =========================== */
-.embedded-bar {
-  padding: 36px 0 0;
-}
-
-.embedded-bar-inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-}
-
 .embedded-companies {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 24px 56px;
-  flex-wrap: wrap;
+  gap: 24px 40px;
 }
 
 .company-logo-wrap {
@@ -410,7 +404,7 @@ img {
 }
 
 .company-logo {
-  height: 20px;
+  height: 17px;
   width: auto;
   max-width: 140px;
   filter: grayscale(1) opacity(0.4);
@@ -423,16 +417,16 @@ img {
 
 /* BharatPe SVG has a taller natural bounding box — scale up to match visual weight */
 .company-logo[alt="BharatPe"] {
-  height: 30px;
+  height: 26px;
 }
 
 .company-logo[alt="OYO"] {
-  height: 19px;
+  height: 16px;
 }
 
 /* The mark dominates this file, so it needs more height to match the wordmarks. */
 .company-logo[alt="Delightree"] {
-  height: 34px;
+  height: 29px;
 }
 
 .company-logo[alt="Medwing"],
@@ -1126,8 +1120,18 @@ img {
   }
 
   .hero-heading {
-    font-size: 52px;
-    letter-spacing: -1.5px;
+    font-size: 72px;
+    letter-spacing: -2px;
+  }
+
+  /* Not enough width for CTAs and five logos on one line. */
+  .hero-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .embedded-companies {
+    flex-wrap: wrap;
   }
 
   .about-grid {
@@ -1221,15 +1225,21 @@ img {
   }
 
   .hero-heading {
-    font-size: 36px;
-    line-height: 1.08;
-    letter-spacing: -1px;
-    margin-bottom: 28px;
+    font-size: 44px;
+    line-height: 1.04;
+    letter-spacing: -1.5px;
+    margin-bottom: 32px;
+  }
+
+  .hero-row {
+    align-items: stretch;
+    gap: 28px;
+    padding-top: 24px;
   }
 
   /* CTAs side by side */
   .hero-ctas {
-    margin-bottom: 40px;
+    width: 100%;
     flex-direction: row;
     align-items: stretch;
     gap: 8px;
@@ -1245,7 +1255,7 @@ img {
 
   /* Specialisms stack */
   .specialize {
-    padding: 40px 0 16px;
+    padding: 48px 0 16px;
   }
 
   .specialize-grid {
@@ -1269,12 +1279,9 @@ img {
     line-height: 24px;
   }
 
-  /* Logos wrap to two rows rather than shrinking past legibility. */
-  .embedded-bar {
-    padding: 28px 0 0;
-  }
-
+  /* Logos wrap to two centred rows rather than shrinking past legibility. */
   .embedded-companies {
+    justify-content: center;
     gap: 16px 32px;
   }
 
@@ -1556,6 +1563,7 @@ img {
 
 /* Hero */
 [data-theme="dark"] .hero-heading { color: #f0efe9; }
+[data-theme="dark"] .hero-row { border-top-color: #2e2c2a; }
 [data-theme="dark"] .btn-primary {
   background: #f0efe9;
   color: #111110;
