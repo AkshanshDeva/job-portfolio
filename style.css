@@ -502,129 +502,112 @@ img {
   border-bottom: 1px solid #ebebeb;
 }
 
-.work-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px 40px;
+/* One project per row: text column on the left, cover on the right,
+   hairline rules between rows. The whole row is the link. */
+.work-list {
+  border-top: 1px solid #ebebeb;
 }
 
-.work-card {
-  display: flex;
-  flex-direction: column;
-  background: transparent;
-  border: none;
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-  text-decoration: none;
+.work-row {
+  display: grid;
+  grid-template-columns: 4fr 7fr;
+  gap: 56px;
+  padding: 48px 0;
+  border-bottom: 1px solid #ebebeb;
   color: inherit;
 }
 
-.work-card:hover {
-  transform: scale(1.02);
-  box-shadow: none;
+.work-row:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
-/* Image placeholder */
-.work-card-image {
-  background: #ededed;
-  border-radius: 12px;
-  aspect-ratio: 16 / 10;
-  width: 100%;
+.work-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.work-row-meta {
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  position: relative;
-  overflow: hidden;
+  gap: 14px;
 }
 
-/* Card with real photo */
-.work-card-img {
+.work-row-index {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  line-height: 1;
+  color: #b0aca5;
+  font-variant-numeric: tabular-nums;
+}
+
+.work-row-logo {
+  height: 20px;
+  width: auto;
+  filter: grayscale(1) opacity(0.7);
+}
+
+.work-row-logo-oyo {
+  height: 16px;
+}
+
+.work-row-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.6px;
+  color: #1a1917;
+}
+
+.work-row-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Ghost button: transparent fill, hairline border, sits at the foot of the column. */
+.work-row-cta {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  margin-top: auto;
+  height: 36px;
+  padding: 0 16px;
+  border: 1.5px solid rgba(26, 25, 23, 0.2);
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1917;
+  white-space: nowrap;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.work-row:hover .work-row-cta {
+  border-color: rgba(26, 25, 23, 0.45);
+  background: rgba(26, 25, 23, 0.04);
+}
+
+.work-row-image {
+  border-radius: 14px;
+  overflow: hidden;
+  background: #eceae6;
+  aspect-ratio: 1400 / 880;
+}
+
+.work-row-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center top;
-  display: block;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.work-card-image-medwing,
-.work-card-image-oyo,
-.work-card-image-onboarding {
-  background: #eceae6;
-}
-
-[data-theme="dark"] .work-card-image-medwing,
-[data-theme="dark"] .work-card-image-oyo,
-[data-theme="dark"] .work-card-image-onboarding {
-  background: #1e1c1a;
-}
-
-.work-card-image-airfocus {
-  background: #eceae6;
-}
-
-[data-theme="dark"] .work-card-image-airfocus {
-  background: #1e1c1a;
-}
-
-.work-card-image-locked {
-  background: #eceae6;
-}
-
-.work-card-image-label {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-size: 13px;
-  line-height: 22px;
-  color: #b0aca5;
-  text-align: center;
-}
-
-/* Card body */
-.work-card-body {
-  display: flex;
-  flex-direction: column;
-  padding: 18px 0 0 0;
-  flex: 1;
-}
-
-/* Coming soon state */
-.work-card-coming-soon {
-  cursor: default;
-  filter: grayscale(1);
-  opacity: 0.6;
-}
-
-.work-card-coming-soon:hover {
-  transform: none;
-  box-shadow: none;
-  border-color: #ebebeb;
-}
-
-.work-card-coming-soon-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: auto;
-  align-self: flex-start;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  color: #b0aca5;
-  background: #f5f5f5;
-  border: 1px solid #e2e2e2;
-  border-radius: 999px;
-  padding: 4px 10px 4px 8px;
-}
-
-.work-card-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 14px;
+.work-row:hover .work-row-image img {
+  transform: scale(1.03);
 }
 
 .chip {
@@ -650,38 +633,6 @@ img {
 .chip-negative {
   background: #fdf0f0;
   color: #8b2020;
-}
-
-.work-card-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: -0.4px;
-  color: #1a1917;
-  margin-bottom: 6px;
-}
-
-.work-card-desc {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 300;
-  line-height: 21.45px;
-  color: #807d78;
-  margin-bottom: 14px;
-}
-
-.work-card-link {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 18px;
-  color: #1a1917;
-  border-bottom: 1px solid #b0aca5;
-  align-self: flex-start;
-  padding-bottom: 2px;
-  margin-top: auto;
-  padding-top: 4px;
 }
 
 /* ===========================
@@ -1121,6 +1072,14 @@ img {
     font-size: 36px;
     line-height: 40px;
   }
+
+  .work-row {
+    gap: 32px;
+  }
+
+  .work-row-title {
+    font-size: 24px;
+  }
 }
 
 /* ===========================
@@ -1245,50 +1204,36 @@ img {
     margin-bottom: 20px;
   }
 
-  .work-grid {
+  /* Rows stack with the cover first, the scroll hook on a phone. */
+  .work-row {
     grid-template-columns: 1fr;
-    gap: 0;
+    gap: 20px;
+    padding: 28px 0;
   }
 
-  /* Borderless cards on mobile */
-  .work-card {
-    border: none;
-    border-radius: 0;
-    padding: 0 0 32px 0;
-    border-bottom: 1px solid #ebebeb;
-  }
-
-  .work-card:last-child {
-    border-bottom: none;
-  }
-
-  .work-card:hover {
-    transform: none;
-    box-shadow: none;
-  }
-
-  .work-card-image {
+  .work-row-image {
+    order: -1;
     border-radius: 10px;
-    border-bottom: none;
   }
 
-  .work-card-body {
-    padding: 16px 0 0 0;
+  .work-row-text {
+    gap: 14px;
   }
 
-  .work-card-chips {
-    gap: 5px;
+  .work-row-title {
+    font-size: 22px;
+    line-height: 1.25;
+    letter-spacing: -0.3px;
+  }
+
+  .work-row-cta {
+    margin-top: 4px;
   }
 
   .chip {
     font-size: 11px;
     padding: 3px 8px;
     height: 22px;
-  }
-
-  .work-card-title {
-    font-size: 18px;
-    line-height: 1.3;
   }
 
   /* Experience */
@@ -1530,21 +1475,17 @@ img {
 
 /* Work section */
 [data-theme="dark"] .work { border-bottom-color: #2e2c2a; }
-[data-theme="dark"] .work-card-coming-soon:hover { transform: none; }
-[data-theme="dark"] .work-card-image { background: #242220; }
-[data-theme="dark"] .work-card-image-locked {
-  background: #1e1c1a;
-}
-[data-theme="dark"] .work-card-title { color: #f0efe9; }
-[data-theme="dark"] .work-card-link { color: #f0efe9; border-bottom-color: #6b6762; }
+[data-theme="dark"] .work-list,
+[data-theme="dark"] .work-row { border-color: #2e2c2a; }
+[data-theme="dark"] .work-row-index { color: #6b6762; }
+[data-theme="dark"] .work-row-logo { filter: grayscale(1) invert(1) opacity(0.75); }
+[data-theme="dark"] .work-row-title { color: #f0efe9; }
+[data-theme="dark"] .work-row-cta { color: #f0efe9; border-color: rgba(240, 239, 233, 0.25); }
+[data-theme="dark"] .work-row:hover .work-row-cta { border-color: rgba(240, 239, 233, 0.5); background: rgba(240, 239, 233, 0.05); }
+[data-theme="dark"] .work-row-image { background: #1e1c1a; }
 [data-theme="dark"] .chip { background: #2a2826; color: #9c9994; }
 [data-theme="dark"] .chip-positive { background: #0f2e0f; color: #4caf50; }
 [data-theme="dark"] .chip-negative { background: #2e0f0f; color: #e57373; }
-[data-theme="dark"] .work-card-coming-soon-badge {
-  background: #242220;
-  border-color: #2e2c2a;
-  color: #6b6762;
-}
 
 /* About */
 [data-theme="dark"] .about { border-bottom-color: #2e2c2a; }
