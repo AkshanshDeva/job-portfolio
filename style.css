@@ -1215,7 +1215,9 @@ img {
   }
 
   /* Mobile: no room for the copy-email ghost, so only the project CTA slides in. */
-  #navCopyEmail {
+  /* Both scroll-in CTAs live in the phone menu instead. */
+  .nav-ghost-btns,
+  .nav.ctas-hidden .nav-ghost-btns {
     display: none;
   }
 
@@ -1519,6 +1521,90 @@ img {
   }
 }
 
+/* ===========================
+   Phone menu
+   =========================== */
+.nav-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(26, 25, 23, 0.35);
+  color: #1a1917;
+  flex-shrink: 0;
+}
+
+.nav-menu-btn .icon-close,
+.nav-menu-btn[aria-expanded="true"] .icon-menu {
+  display: none;
+}
+
+.nav-menu-btn[aria-expanded="true"] .icon-close {
+  display: block;
+}
+
+/* Drops under the 60px bar, full width, solid so page content never shows through. */
+.nav-menu {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-bottom: 1px solid #ebebeb;
+  padding: 4px 20px 24px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+}
+
+.nav-menu[hidden] {
+  display: none;
+}
+
+.nav-menu-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-menu-link {
+  display: flex;
+  align-items: center;
+  height: 52px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: #1a1917;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.nav-menu-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+/* The phone-wide flex: 1 on buttons would collapse their height in this column. */
+.nav-menu-ctas .btn-primary,
+.nav-menu-ctas .btn-outline {
+  flex: none;
+  width: 100%;
+  height: 44px;
+  justify-content: center;
+}
+
+/* Keep the bar solid while the menu hangs off it. */
+.nav.menu-open {
+  background: #fff;
+}
+
+/* After the base rule above, so it wins at phone width. */
+@media (max-width: 640px) {
+  .nav-menu-btn {
+    display: inline-flex;
+  }
+}
+
 /* In light mode: show moon, hide sun */
 .theme-toggle .icon-sun { display: none; }
 .theme-toggle .icon-moon { display: block; }
@@ -1555,6 +1641,19 @@ img {
 [data-theme="dark"] .btn-nav-cta {
   color: #f0efe9;
   border-color: rgba(240, 239, 233, 0.35);
+}
+[data-theme="dark"] .nav-menu-btn {
+  color: #f0efe9;
+  border-color: rgba(240, 239, 233, 0.35);
+}
+[data-theme="dark"] .nav-menu,
+[data-theme="dark"] .nav.menu-open {
+  background: #111110;
+  border-bottom-color: #2e2c2a;
+}
+[data-theme="dark"] .nav-menu-link {
+  color: #f0efe9;
+  border-bottom-color: #2e2c2a;
 }
 [data-theme="dark"] .theme-toggle {
   color: #f0efe9;
