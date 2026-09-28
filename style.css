@@ -672,7 +672,6 @@ img {
   display: grid;
   grid-template-columns: 913fr 320fr;
   gap: 64px;
-  margin-bottom: 56px;
 }
 
 .about-bio p {
@@ -722,8 +721,7 @@ img {
 /* ===========================
    Experience
    =========================== */
-/* Single column: intro and actions, with the timeline behind a toggle so
-   founders skip it and hiring managers are one click away. */
+/* Single column: intro and resume button, then the timeline. */
 .experience-grid {
   display: flex;
   flex-direction: column;
@@ -734,48 +732,15 @@ img {
   max-width: 640px;
 }
 
-/* Same hairline and rhythm as the rules between the page's other sections. */
+/* Sits after the testimonials, whose bottom rule separates the two. */
 .experience-section {
-  border-top: 1px solid #ebebeb;
-  padding-top: 60px;
+  padding: 60px 0 64px;
 }
 
-/* Resume on the left, the accordion trigger on the right. */
 .experience-actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
-}
-
-.exp-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 0;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: #807d78;
-  transition: color 0.2s ease;
-}
-
-.exp-toggle:hover,
-.exp-toggle[aria-expanded="true"] {
-  color: #1a1917;
-}
-
-.exp-toggle-icon {
-  transition: transform 0.25s ease;
-}
-
-.exp-toggle[aria-expanded="true"] .exp-toggle-icon {
-  transform: rotate(180deg);
-}
-
-/* Collapsed only when JS is running, so the timeline never becomes unreachable. */
-.js .exp-collapsed .experience-table {
-  display: none;
 }
 
 .experience-aside p {
@@ -1322,10 +1287,10 @@ img {
   }
 
   .experience-section {
-    padding-top: 40px;
+    padding: 40px 0 48px;
   }
 
-  /* Keep the resume button at its natural width so the toggle keeps its side. */
+  /* Keep the resume button at its natural width rather than full-row. */
   .experience-actions .btn-outline {
     flex: none;
     padding: 0 18px;
@@ -1571,10 +1536,6 @@ img {
 
 /* Experience */
 [data-theme="dark"] .experience-aside p { color: #9c9994; }
-[data-theme="dark"] .experience-section { border-top-color: #2e2c2a; }
-[data-theme="dark"] .exp-toggle { color: #9c9994; }
-[data-theme="dark"] .exp-toggle:hover,
-[data-theme="dark"] .exp-toggle[aria-expanded="true"] { color: #f0efe9; }
 [data-theme="dark"] .exp-row { border-color: #2e2c2a; }
 [data-theme="dark"] .exp-company { color: #f0efe9; }
 [data-theme="dark"] .exp-role { color: #9c9994; }
