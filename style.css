@@ -684,8 +684,8 @@ img {
   color: #1a1917;
 }
 
-.about-bio strong {
-  font-weight: 700;
+.about-bio p + p {
+  margin-top: 20px;
 }
 
 .about-photo {
@@ -722,10 +722,36 @@ img {
 /* ===========================
    Experience
    =========================== */
+/* Single column: intro and actions, with the timeline behind a toggle so
+   founders skip it and hiring managers are one click away. */
 .experience-grid {
-  display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.experience-aside {
+  max-width: 640px;
+}
+
+.experience-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.exp-toggle-icon {
+  transition: transform 0.25s ease;
+}
+
+.exp-toggle[aria-expanded="true"] .exp-toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* Collapsed only when JS is running, so the timeline never becomes unreachable. */
+.js .exp-collapsed .experience-table {
+  display: none;
 }
 
 .experience-aside p {
@@ -1082,15 +1108,6 @@ img {
   .about-photo {
     min-height: 240px;
     max-width: 320px;
-  }
-
-  .experience-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-
-  .experience-aside {
-    max-width: 480px;
   }
 
   .footer-heading {
