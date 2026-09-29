@@ -7,701 +7,323 @@
   <meta name="description" content="Product design that moves core business metrics. Growth design and UX of AI.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@300;400;700;800&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <!-- Applied before first paint so the default dark theme never flashes white. -->
+  <!-- Stored choice wins; otherwise follow the system. Runs before first paint. -->
   <script>
     (function() {
-      if (localStorage.getItem('theme') !== 'light') {
-        document.documentElement.setAttribute('data-theme', 'dark');
-      }
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
     })();
   </script>
 </head>
 <body>
 
-  <!-- Navigation -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-name">Akshansh Deva</a>
-      <div class="nav-links">
-        <a href="#work" class="nav-link active">Work</a>
-        <a href="writing/" class="nav-link">Writing</a>
-        <a href="#about" class="nav-link">About</a>
-      </div>
-      <div class="nav-actions">
-        <div class="nav-ghost-btns">
-          <button class="btn-nav-ghost" id="navCopyEmail">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            <span id="navCopyEmailText" aria-live="polite">Copy email</span>
-          </button>
-        </div>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        </button>
-        <!-- Phones only: the inline links and CTAs don't fit, so they live in this menu. -->
-        <button class="nav-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
-          <svg class="icon-menu" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
-          <svg class="icon-close" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
-        </button>
-      </div>
+  <nav class="s-nav" aria-label="Main">
+    <a href="/" class="s-name">Akshansh Deva</a>
+    <div class="s-links">
+      <a href="#work">Work</a>
+      <a href="writing/">Writing</a>
+      <a href="#about">About</a>
     </div>
+    <button class="s-icon" id="themeToggle" aria-label="Switch light or dark mode">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </button>
+    <button class="s-btn s-btn-primary s-nav-copy" data-copy-email>
+      <span class="s-copy-icon" aria-hidden="true">
+        <svg class="idle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        <svg class="done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>
+      </span>
+      <span class="s-copy-label" aria-live="polite"><span class="idle">Copy email</span><span class="done">Copied</span></span>
+    </button>
+    <!-- Phones only: the links and Copy email move into the sheet below. -->
+    <button class="s-icon s-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
+      <svg class="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="8" x2="20" y2="8"/><line x1="4" y1="16" x2="20" y2="16"/></svg>
+      <svg class="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+    </button>
   </nav>
 
-  <!-- Phone menu: a bottom sheet over a scrim. Lives outside the nav because the
-       nav's backdrop-filter would otherwise trap these fixed elements inside it. -->
-  <div class="nav-scrim" id="navScrim" aria-hidden="true"></div>
-  <div class="nav-menu" id="navMenu" role="dialog" aria-label="Menu">
-    <div class="nav-menu-handle" aria-hidden="true"></div>
-    <div class="nav-menu-links">
-      <a href="#work" class="nav-menu-link">Work</a>
-      <a href="writing/" class="nav-menu-link">Writing</a>
-      <a href="#about" class="nav-menu-link">About</a>
-    </div>
-    <div class="nav-menu-ctas">
-      <button class="btn-primary" id="menuCopyEmail">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-        <span id="menuCopyEmailText" aria-live="polite">Copy email</span>
-      </button>
-    </div>
+  <!-- Phone menu: a bottom sheet over a scrim, driven by site.js. It sits outside the nav
+       because the nav's backdrop-filter would otherwise trap these fixed elements inside it. -->
+  <div class="s-scrim" id="navScrim" aria-hidden="true"></div>
+  <div class="s-sheet" id="navMenu" role="dialog" aria-label="Menu">
+    <div class="s-sheet-handle" aria-hidden="true"></div>
+    <nav class="s-sheet-links" aria-label="Main">
+      <a href="#work">Work</a>
+      <a href="writing/">Writing</a>
+      <a href="#about">About</a>
+    </nav>
+    <button class="s-btn s-btn-primary s-sheet-cta" data-copy-email>
+      <span class="s-copy-icon" aria-hidden="true">
+          <svg class="idle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <svg class="done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>
+        </span>
+      <span class="s-copy-label" aria-live="polite"><span class="idle">Copy email</span><span class="done">Copied</span></span>
+    </button>
   </div>
 
   <main>
+    <section class="s-hero wrap">
+      <h1 class="s-h1"><span class="g">Product design</span> <span>that moves core business metrics</span></h1>
+      <div class="s-hero-row">
+        <div class="s-ctas">
+          <button class="s-btn s-btn-primary" data-copy-email>
+            <span class="s-copy-icon" aria-hidden="true"><svg class="idle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><svg class="done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
+            <span class="s-copy-label" aria-live="polite"><span class="idle">Copy email</span><span class="done">Copied</span></span>
+          </button>
+          <a href="https://www.linkedin.com/in/akshansh-deva/" class="s-btn s-btn-secondary" target="_blank" rel="noopener">Message on LinkedIn</a>
+        </div>
+        <ul class="s-logos" aria-label="Previously at">
+          <li><img src="assets/logos/oyo.svg" alt="OYO"></li>
+          <li><img class="logo-lg" src="assets/logos/bharatpe.svg" alt="BharatPe"></li>
+          <li><img src="assets/logos/airfocus.svg" alt="airfocus"></li>
+          <li><img src="assets/logos/medwing.svg" alt="Medwing"></li>
+          <li><img class="logo-lg" src="assets/logos/delightree.svg" alt="Delightree"></li>
+        </ul>
+      </div>
+    </section>
 
-    <!-- Hero -->
-    <section class="hero" id="hero">
-      <div class="container">
-        <h1 class="hero-heading">Product design that moves core business metrics</h1>
-        <!-- Statement, then one proof row: CTAs left, past companies right. -->
-        <div class="hero-row">
-          <div class="hero-ctas" id="heroCtas">
-            <button class="btn-primary" id="copyEmail">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-              <span id="copyEmailText" aria-live="polite">Copy email</span>
-            </button>
-            <a href="https://www.linkedin.com/in/akshansh-deva/" class="btn-outline" target="_blank" rel="noopener">Message on LinkedIn</a>
+    <section class="wrap" id="specialize">
+      <h2 class="s-h2">I specialize in</h2>
+      <div class="s-spec">
+        <article class="s-spec-item">
+          <!-- Illustrations only: they restate the copy beside them, so screen readers skip them. -->
+          <div class="s-viz" aria-hidden="true">
+            <div class="s-funnel">
+              <div class="s-stage"><span>Acquisition</span><span class="s-bar" style="--w: 100%"></span></div>
+              <div class="s-stage is-on"><span>Activation</span><span class="s-bar" style="--w: 84%"><em>The one metric</em></span></div>
+              <div class="s-stage"><span>Retention</span><span class="s-bar" style="--w: 66%"></span></div>
+              <div class="s-stage"><span>Referral</span><span class="s-bar" style="--w: 48%"></span></div>
+              <div class="s-stage"><span>Revenue</span><span class="s-bar" style="--w: 36%"></span></div>
+            </div>
           </div>
-          <div class="embedded-companies" role="group" aria-label="Previously at">
-            <div class="company-logo-wrap"><img src="assets/logos/oyo.svg" alt="OYO" class="company-logo"><span class="company-logo-fallback">OYO</span></div>
-            <div class="company-logo-wrap"><img src="assets/logos/bharatpe.svg" alt="BharatPe" class="company-logo"><span class="company-logo-fallback">BharatPe</span></div>
-            <div class="company-logo-wrap"><img src="assets/logos/airfocus.svg" alt="Airfocus" class="company-logo"><span class="company-logo-fallback">Airfocus</span></div>
-            <div class="company-logo-wrap"><img src="assets/logos/medwing.svg" alt="Medwing" class="company-logo"><span class="company-logo-fallback">Medwing</span></div>
-            <div class="company-logo-wrap"><img src="assets/logos/delightree.svg" alt="Delightree" class="company-logo"><span class="company-logo-fallback">Delightree</span></div>
+          <h3 class="s-spec-title">Growth design</h3>
+          <p class="s-spec-body">I work across the AARRR growth funnel, optimizing for the one metric your team wants to focus on. We run quick, data-driven experiments until we hit the goal.</p>
+        </article>
+        <article class="s-spec-item">
+          <div class="s-viz" aria-hidden="true">
+            <div class="s-rules">
+              <div class="s-rule"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></i><span>Decides alone</span><span class="s-toggle"></span></div>
+              <div class="s-rule"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 0 1 4.8 1c0 1.7-2.3 2.2-2.3 3.5M12 17h.01"/></svg></i><span>Asks first</span><small>Waiting for you</small></div>
+              <div class="s-rule"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></i><span>A human must vet</span><small>Needs review</small></div>
+              <div class="s-rule"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16a8 8 0 1 1 16 0"/><path d="m12 16 4-5"/></svg></i><span>Reasoning and confidence</span><span class="s-conf"><b></b><b></b><b></b><b></b></span></div>
+            </div>
+          </div>
+          <h3 class="s-spec-title">UX of AI</h3>
+          <p class="s-spec-body">I build trustworthy AI experiences by defining the boundaries: what the AI decides alone, what it asks first, what a human must vet, and how its reasoning and confidence are shown.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- WORK:START -->
+    <section class="wrap" id="work">
+      <h2 class="s-h2">Selected work</h2>
+      <div class="s-grid">
+
+        <a class="s-tile wide med" href="https://www.figma.com/proto/kHhALZPvUCW59NCj1zQX9s/Design?page-id=212%3A2&node-id=1001-7172&viewport=-2095%2C201%2C0.07&t=8ieldbMsFV4ot3oV-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=255%3A1805&show-proto-sidebar=1" target="_blank" rel="noopener">
+          <div class="s-shot"><img class="s-dev" src="assets/medwing-cover.png" alt="Medwing hiring marketplace on a laptop"></div>
+          <div class="s-glass">
+            <p class="s-metric"><span>$0 &rarr; $1M ARR</span></p>
+            <div class="s-cap">
+              <div>
+                <p class="s-cap-co">Medwing</p>
+                <h3 class="s-cap-title">Converting an outdated ATS into a $1M ARR SaaS hiring marketplace</h3>
+                <p class="s-cap-tags">Healthcare, B2B SaaS, Series A, Responsive</p>
+              </div>
+              <div class="s-cap-side">
+                <span class="s-view">View case study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <a class="s-tile wide af" href="https://www.figma.com/proto/kHhALZPvUCW59NCj1zQX9s/Design?page-id=208%3A2&node-id=742-60298&viewport=4095%2C4592%2C0.42&t=FwS5oFgNgDFOm6B6-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=797%3A101088" target="_blank" rel="noopener">
+          <div class="s-shot"><img class="s-dev" src="assets/airfocus-cover.png" alt="airfocus workspace on a laptop"></div>
+          <div class="s-glass">
+            <p class="s-metric"><span>17% new business from expansion</span></p>
+            <div class="s-cap">
+              <div>
+                <p class="s-cap-co">airfocus</p>
+                <h3 class="s-cap-title">Scaling a PM workflow tool from startup-friendly to enterprise-ready</h3>
+                <p class="s-cap-tags">Productivity, B2B SaaS, Series A, Web</p>
+              </div>
+              <div class="s-cap-side">
+                <span class="s-view">View case study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <a class="s-tile oyo" href="https://medium.com/design-bootcamp/redesigning-oyos-post-booking-page-ea940a9664f7" target="_blank" rel="noopener">
+          <div class="s-shot"><img class="s-dev" src="assets/oyo-cover.png" alt="OYO payment screen on a phone"></div>
+          <div class="s-glass">
+            <p class="s-metric"><span>&uarr; Online payments</span><span>&darr; Cancellations</span></p>
+            <div class="s-cap">
+              <div>
+                <p class="s-cap-co">OYO</p>
+                <h3 class="s-cap-title">Redesigning the payment moment to cut hotel cancellations</h3>
+                <p class="s-cap-tags">Travel, B2C, Series C, Mobile</p>
+              </div>
+              <div class="s-cap-side">
+                <span class="s-view">View case study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <div class="s-tile onb soon">
+          <div class="s-shot"><img class="s-dev" src="assets/onboarding-cover.png" alt="Medwing onboarding on a phone"></div>
+          <div class="s-glass">
+            <p class="s-metric"><span>+25% Onboarding conversion</span></p>
+            <div class="s-cap">
+              <div>
+                <p class="s-cap-co">Medwing</p>
+                <h3 class="s-cap-title">Fixing a leaky user acquisition funnel</h3>
+                <p class="s-cap-tags">Healthcare, B2B SaaS, Series A, Responsive</p>
+              </div>
+              <div class="s-cap-side">
+                <span class="s-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Coming soon</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <!-- WORK:END -->
+
+    <section class="wrap" id="testimonials">
+      <div class="s-head-row">
+        <h2 class="s-h2">What teams say</h2>
+        <!-- Phones: the portraits don't fit as strips, so this switch takes over. -->
+        <div class="s-seg" role="group" aria-label="Choose a testimonial">
+          <button type="button" data-for="malte" aria-pressed="true" aria-controls="quote-malte">Malte</button>
+          <button type="button" data-for="jonathan" aria-pressed="false" aria-controls="quote-jonathan">Jonathan</button>
+          <button type="button" data-for="rajat" aria-pressed="false" aria-controls="quote-rajat">Rajat</button>
+        </div>
+      </div>
+      <div class="s-spot">
+        <!-- Desktop: the portraits are the switch. The current person is wide, the others are strips. -->
+        <div class="s-strips" role="group" aria-label="Choose a testimonial">
+          <button type="button" class="s-strip on" data-for="malte" aria-pressed="true" aria-controls="quote-malte" aria-label="Show Malte Scholz's testimonial">
+            <img src="assets/avatars/malte.jpeg" alt="">
+            <span aria-hidden="true">Malte</span>
+          </button>
+          <button type="button" class="s-strip" data-for="jonathan" aria-pressed="false" aria-controls="quote-jonathan" aria-label="Show Jonathan Magen's testimonial">
+            <img src="assets/avatars/jonathan.jpeg" alt="">
+            <span aria-hidden="true">Jonathan</span>
+          </button>
+          <button type="button" class="s-strip" data-for="rajat" aria-pressed="false" aria-controls="quote-rajat" aria-label="Show Rajat Kashyap's testimonial">
+            <img src="assets/avatars/rajat.jpeg" alt="">
+            <span aria-hidden="true">Rajat</span>
+          </button>
+        </div>
+        <div class="s-spot-body">
+          <div class="s-spot-quotes" aria-live="polite">
+            <figure class="s-spot-item on" id="quote-malte">
+              <blockquote>&ldquo;Everyone on the team enjoyed collaborating with Akshansh. Great product designer and teammate. He is a proven problem solver who understands the bigger picture and how design impacts users and businesses. Brings a broad range of skills from different industries and verticals. Plus: he can take you on a trip through the Himalayas.&rdquo;</blockquote>
+              <figcaption><b>Malte Scholz</b><small>Founder &amp; CPO &middot; airfocus (acq. by Lucid)</small></figcaption>
+            </figure>
+            <figure class="s-spot-item" id="quote-jonathan" aria-hidden="true">
+              <blockquote>&ldquo;I had the privilege of managing Akshansh at MEDWING. Amid a challenging period with reduced resources, he stepped up, taking on big challenges, creating a new B2B SaaS platform, and delivering critical solutions under tight deadlines. He brought fresh ideas that increased our user onboarding and activation conversions.&rdquo;</blockquote>
+              <figcaption><b>Jonathan Magen</b><small>VP Product &middot; MEDWING</small></figcaption>
+            </figure>
+            <figure class="s-spot-item" id="quote-rajat" aria-hidden="true">
+              <blockquote>&ldquo;Akshansh possesses a unique talent for diving deep into the core of a problem, dissecting its intricacies, and understanding the underlying needs of users. What sets him apart is his ability to bridge the gap between problem statement and solutioning, approaching each project with a strategic mindset.&rdquo;</blockquote>
+              <figcaption><b>Rajat Kashyap</b><small>Director of Product Design &middot; OYO</small></figcaption>
+            </figure>
           </div>
         </div>
       </div>
     </section>
-
-    <!-- Specialisms -->
-    <section class="specialize" id="specialize">
-      <div class="container">
-        <h2 class="section-label-b">I specialize in</h2>
-        <div class="specialize-grid">
-          <article class="specialize-card">
-            <h3 class="specialize-title">Growth design</h3>
-            <p class="specialize-body">I work across the AARRR growth funnel, optimizing for the one metric your team wants to focus on. We run quick, data-driven experiments until we hit the goal.</p>
-          </article>
-          <article class="specialize-card">
-            <h3 class="specialize-title">UX of AI</h3>
-            <p class="specialize-body">I build trustworthy AI experiences by defining the boundaries: what the AI decides alone, what it asks first, what a human must vet, and how its reasoning and confidence are shown.</p>
-          </article>
+    <section class="wrap" id="about">
+      <h2 class="s-h2">About</h2>
+      <div class="s-about">
+        <div class="s-about-text">
+          <p class="s-about-lead">Hi, I'm Akshansh. I've been designing products for eight years, for startups&nbsp;- early stage, growth&nbsp;&amp; unicorns.</p>
+          <p>I take on project work, and I'm open to a full&#8209;time role with the right team, remote, timezone flexible. I work end-to-end (research, flows, prototyping, UI) and I ship prototypes in code, not just Figma. I've also founded a company and worked in Venture Capital.</p>
         </div>
+        <div class="s-about-photo"><img src="assets/photo.jpg" alt="Akshansh Deva" width="800" height="800" loading="lazy"></div>
       </div>
     </section>
-
-    <!-- Selected Work -->
-    <section class="work" id="work">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-label-b">Selected work</span>
-        </div>
-        <div class="work-list">
-
-          <a href="https://www.figma.com/proto/kHhALZPvUCW59NCj1zQX9s/Design?page-id=212%3A2&node-id=1001-7172&viewport=-2095%2C201%2C0.07&t=8ieldbMsFV4ot3oV-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=255%3A1805&show-proto-sidebar=1" class="work-row" target="_blank" rel="noopener">
-            <div class="work-row-text">
-              <div class="work-row-meta">
-                <span class="work-row-index" aria-hidden="true">01</span>
-                <span class="work-row-company">Medwing</span>
-              </div>
-              <h3 class="work-row-title">Converting an outdated ATS into a $1M ARR SaaS hiring marketplace</h3>
-              <div class="work-row-chips">
-                <span class="chip">Healthcare</span>
-                <span class="chip">B2B SaaS</span>
-                <span class="chip">Series A</span>
-                <span class="chip">Responsive</span>
-                <span class="chip chip-positive">$0 &rarr; $1M ARR</span>
-              </div>
-              <span class="work-row-cta">View case study &rarr;</span>
-            </div>
-            <div class="work-row-image">
-              <img src="assets/medwing-cover.png" alt="Medwing product screenshot" loading="lazy">
-            </div>
+    <section class="wrap" id="experience">
+      <h2 class="s-h2">Experience</h2>
+      <div class="s-exp">
+        <div class="s-exp-intro">
+          <p>Eight years across B2B SaaS, fintech, travel and healthcare, most recently designing AI features for frontline teams.</p>
+          <a href="assets/akshansh-deva-resume.pdf" class="s-btn s-btn-secondary" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download resume
           </a>
-
-          <a href="https://www.figma.com/proto/kHhALZPvUCW59NCj1zQX9s/Design?page-id=208%3A2&node-id=742-60298&viewport=4095%2C4592%2C0.42&t=FwS5oFgNgDFOm6B6-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=797%3A101088" class="work-row" target="_blank" rel="noopener">
-            <div class="work-row-text">
-              <div class="work-row-meta">
-                <span class="work-row-index" aria-hidden="true">02</span>
-                <span class="work-row-company">airfocus</span>
-              </div>
-              <h3 class="work-row-title">Scaling a PM workflow tool from startup-friendly to enterprise-ready</h3>
-              <div class="work-row-chips">
-                <span class="chip">Productivity</span>
-                <span class="chip">B2B SaaS</span>
-                <span class="chip">Series A</span>
-                <span class="chip">Web</span>
-                <span class="chip chip-positive">17% new business from expansion</span>
-              </div>
-              <span class="work-row-cta">View case study &rarr;</span>
-            </div>
-            <div class="work-row-image">
-              <img src="assets/airfocus-cover.png" alt="airfocus product screenshot" loading="lazy">
-            </div>
-          </a>
-
-          <a href="https://medium.com/design-bootcamp/redesigning-oyos-post-booking-page-ea940a9664f7" class="work-row" target="_blank" rel="noopener">
-            <div class="work-row-text">
-              <div class="work-row-meta">
-                <span class="work-row-index" aria-hidden="true">03</span>
-                <span class="work-row-company">OYO</span>
-              </div>
-              <h3 class="work-row-title">Redesigning the payment moment to cut hotel cancellations</h3>
-              <div class="work-row-chips">
-                <span class="chip">Travel</span>
-                <span class="chip">B2C</span>
-                <span class="chip">Series C</span>
-                <span class="chip">Mobile</span>
-                <span class="chip chip-positive">&uarr; Online payments</span>
-                <span class="chip chip-negative">&darr; Cancellations</span>
-              </div>
-              <span class="work-row-cta">View case study &rarr;</span>
-            </div>
-            <div class="work-row-image">
-              <img src="assets/oyo-cover.png" alt="OYO product screenshot" loading="lazy">
-            </div>
-          </a>
-
-          <div class="work-row work-row-soon">
-            <div class="work-row-text">
-              <div class="work-row-meta">
-                <span class="work-row-index" aria-hidden="true">04</span>
-                <span class="work-row-company">Medwing</span>
-              </div>
-              <h3 class="work-row-title">Fixing a leaky user acquisition funnel</h3>
-              <div class="work-row-chips">
-                <span class="chip">Healthcare</span>
-                <span class="chip">B2B SaaS</span>
-                <span class="chip">Series A</span>
-                <span class="chip">Responsive</span>
-                <span class="chip chip-positive">+25% Onboarding conversion</span>
-              </div>
-              <span class="work-row-badge">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                Coming soon
-              </span>
-            </div>
-            <div class="work-row-image">
-              <img src="assets/onboarding-cover.png" alt="Onboarding case study" loading="lazy">
-            </div>
-          </div>
-
         </div>
+        <ol class="s-exp-list">
+          <li class="s-exp-row">
+            <span class="s-exp-co">Delightree</span>
+            <span class="s-exp-role">Senior Product Designer</span>
+            <span class="s-exp-date">2026-present</span>
+          </li>
+          <li class="s-exp-row">
+            <span class="s-exp-co">Independent</span>
+            <span class="s-exp-role">Co-Founder &amp; Startup Advisor</span>
+            <span class="s-exp-date">2024-2025</span>
+          </li>
+          <li class="s-exp-row">
+            <span class="s-exp-co">Medwing</span>
+            <span class="s-exp-role">Senior Product Designer</span>
+            <span class="s-exp-date">2023-2024</span>
+          </li>
+          <li class="s-exp-row">
+            <span class="s-exp-co">airfocus</span>
+            <span class="s-exp-role">Lead Product Designer</span>
+            <span class="s-exp-date">2021-2022</span>
+          </li>
+          <li class="s-exp-row">
+            <span class="s-exp-co">Zay.Works</span>
+            <span class="s-exp-role">Product Design Consultant</span>
+            <span class="s-exp-date">2020-2021</span>
+          </li>
+          <li class="s-exp-row">
+            <span class="s-exp-co">BharatPe</span>
+            <span class="s-exp-role">Senior Product Designer</span>
+            <span class="s-exp-date">2020</span>
+          </li>
+          <li class="s-exp-row">
+            <span class="s-exp-co">OYO</span>
+            <span class="s-exp-role">Product Designer</span>
+            <span class="s-exp-date">2018-2020</span>
+          </li>
+        </ol>
       </div>
     </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials">
-      <div class="container">
-        <span class="section-label-b">What teams say</span>
-        <div class="testimonials-marquee">
-          <div class="marquee-inner marquee-left">
-
-            <div class="testimonial-card">
-              <blockquote>"I had the privilege of managing Akshansh at MEDWING. Amid a challenging period with reduced resources, he stepped up — taking on big challenges, creating a new B2B SaaS platform, and delivering critical solutions under tight deadlines. He brought fresh ideas that increased our user onboarding and activation conversions."</blockquote>
-              <div class="testimonial-footer">
-                <div class="testimonial-avatar"><img src="assets/avatars/jonathan.jpeg" alt="Jonathan Magen"></div>
-                <div class="testimonial-meta">
-                  <span class="testimonial-name">Jonathan Magen</span>
-                  <span class="testimonial-org">VP Product &middot; MEDWING</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="testimonial-card">
-              <blockquote>"Everyone on the team enjoyed collaborating with Akshansh. Great product designer and teammate. He is a proven problem solver who understands the bigger picture and how design impacts users and businesses. Brings a broad range of skills from different industries and verticals. Plus: he can take you on a trip through the Himalayas."</blockquote>
-              <div class="testimonial-footer">
-                <div class="testimonial-avatar"><img src="assets/avatars/malte.jpeg" alt="Malte Scholz"></div>
-                <div class="testimonial-meta">
-                  <span class="testimonial-name">Malte Scholz</span>
-                  <span class="testimonial-org">Founder &amp; CPO &middot; airfocus (acq. by Lucid)</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="testimonial-card">
-              <blockquote>"Akshansh possesses a unique talent for diving deep into the core of a problem, dissecting its intricacies, and understanding the underlying needs of users. What sets him apart is his ability to bridge the gap between problem statement and solutioning — approaching each project with a strategic mindset."</blockquote>
-              <div class="testimonial-footer">
-                <div class="testimonial-avatar"><img src="assets/avatars/rajat.jpeg" alt="Rajat Kashyap"></div>
-                <div class="testimonial-meta">
-                  <span class="testimonial-name">Rajat Kashyap</span>
-                  <span class="testimonial-org">Director of Product Design</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="testimonial-card">
-              <blockquote>"I worked closely with Akshansh for almost 18 months at OYO — from launching new consumer products to rebuilding the entire app &amp; web. His eye for detail and business understanding really helped the team. He pioneered designs built on first-hand user research and helped build the right processes around product design and delivery."</blockquote>
-              <div class="testimonial-footer">
-                <div class="testimonial-avatar"><img src="assets/avatars/mukund.png" alt="Mukund Laddha"></div>
-                <div class="testimonial-meta">
-                  <span class="testimonial-name">Mukund Laddha</span>
-                  <span class="testimonial-org">Product Manager &middot; Adobe (Ex-OYO)</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Duplicates for seamless loop -->
-            <div class="testimonial-card" aria-hidden="true">
-              <blockquote>"I had the privilege of managing Akshansh at MEDWING. Amid a challenging period with reduced resources, he stepped up — taking on big challenges, creating a new B2B SaaS platform, and delivering critical solutions under tight deadlines. He brought fresh ideas that increased our user onboarding and activation conversions."</blockquote>
-              <div class="testimonial-footer">
-                <div class="testimonial-avatar"><img src="assets/avatars/jonathan.jpeg" alt=""></div>
-                <div class="testimonial-meta">
-                  <span class="testimonial-name">Jonathan Magen</span>
-                  <span class="testimonial-org">VP Product &middot; MEDWING</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="testimonial-card" aria-hidden="true">
-              <blockquote>"Everyone on the team enjoyed collaborating with Akshansh. Great product designer and teammate. He is a proven problem solver who understands the bigger picture and how design impacts users and businesses. Brings a broad range of skills from different industries and verticals. Plus: he can take you on a trip through the Himalayas."</blockquote>
-              <div class="testimonial-footer">
-                <div class="testimonial-avatar"><img src="assets/avatars/malte.jpeg" alt=""></div>
-                <div class="testimonial-meta">
-                  <span class="testimonial-name">Malte Scholz</span>
-                  <span class="testimonial-org">Founder &amp; CPO &middot; airfocus (acq. by Lucid)</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="testimonial-card" aria-hidden="true">
-              <blockquote>"Akshansh possesses a unique talent for diving deep into the core of a problem, dissecting its intricacies, and understanding the underlying needs of users. What sets him apart is his ability to bridge the gap between problem statement and solutioning — approaching each project with a strategic mindset."</blockquote>
-              <div class="testimonial-footer">
-                <div class="testimonial-avatar"><img src="assets/avatars/rajat.jpeg" alt=""></div>
-                <div class="testimonial-meta">
-                  <span class="testimonial-name">Rajat Kashyap</span>
-                  <span class="testimonial-org">Director of Product Design</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="testimonial-card" aria-hidden="true">
-              <blockquote>"I worked closely with Akshansh for almost 18 months at OYO — from launching new consumer products to rebuilding the entire app &amp; web. His eye for detail and business understanding really helped the team. He pioneered designs built on first-hand user research and helped build the right processes around product design and delivery."</blockquote>
-              <div class="testimonial-footer">
-                <div class="testimonial-avatar"><img src="assets/avatars/mukund.png" alt=""></div>
-                <div class="testimonial-meta">
-                  <span class="testimonial-name">Mukund Laddha</span>
-                  <span class="testimonial-org">Product Manager &middot; Adobe (Ex-OYO)</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- About -->
-    <section class="about" id="about">
-      <div class="container">
-        <span class="section-label-b">About</span>
-        <div class="about-grid">
-          <div class="about-bio">
-            <p>Hi, I'm Akshansh. I've been designing products for eight years, mostly for startups and growth-stage teams, across B2B SaaS, fintech, travel and healthcare.</p>
-            <p>I work end-to-end (research, flows, prototyping, UI) and I ship prototypes in code, not just Figma. I've also founded a company and worked on the investor side, which shows up in what I choose not to build.</p>
-          </div>
-          <div class="about-photo">
-            <div class="photo-tilt-wrap" id="photoTilt">
-              <img src="assets/photo.jpg" alt="Akshansh Deva" class="photo-img">
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Experience -->
-    <section class="experience-section" id="experience">
-      <div class="container">
-        <span class="section-label-b">Experience</span>
-        <div class="experience-grid">
-          <div class="experience-intro">
-          <div class="experience-aside">
-            <p>Eight years across B2B SaaS, fintech, travel and healthcare, most recently designing AI features for frontline teams. I take on project work, and I'm open to a full-time role with the right team, remote, timezone flexible.</p>
-          </div>
-          <div class="experience-actions">
-            <a href="assets/akshansh-deva-resume.pdf" class="btn-outline" target="_blank" rel="noopener">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Download resume
-            </a>
-          </div>
-          </div>
-          <div class="experience-table">
-            <div class="exp-row">
-              <span class="exp-company">Delightree</span>
-              <div class="exp-right">
-                <span class="exp-role">Senior Product Designer</span>
-                <span class="exp-date">2026 – present</span>
-              </div>
-            </div>
-            <div class="exp-row">
-              <span class="exp-company">Independent</span>
-              <div class="exp-right">
-                <span class="exp-role">Co-Founder &amp; Startup Advisor</span>
-                <span class="exp-date">2024 – 2025</span>
-              </div>
-            </div>
-            <div class="exp-row">
-              <span class="exp-company">Medwing</span>
-              <div class="exp-right">
-                <span class="exp-role">Senior Product Designer</span>
-                <span class="exp-date">2023 – 2024</span>
-              </div>
-            </div>
-            <div class="exp-row">
-              <span class="exp-company">airfocus</span>
-              <div class="exp-right">
-                <span class="exp-role">Lead Product Designer</span>
-                <span class="exp-date">2021 – 2022</span>
-              </div>
-            </div>
-            <div class="exp-row">
-              <span class="exp-company">Zay.Works</span>
-              <div class="exp-right">
-                <span class="exp-role">Product Design Consultant</span>
-                <span class="exp-date">2020 – 2021</span>
-              </div>
-            </div>
-            <div class="exp-row">
-              <span class="exp-company">BharatPe</span>
-              <div class="exp-right">
-                <span class="exp-role">Senior Product Designer</span>
-                <span class="exp-date">2020</span>
-              </div>
-            </div>
-            <div class="exp-row">
-              <span class="exp-company">OYO</span>
-              <div class="exp-right">
-                <span class="exp-role">Product Designer</span>
-                <span class="exp-date">2018 – 2020</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer" id="contact">
-      <div class="container">
-        <div class="footer-main">
-          <div class="footer-left">
-            <h2 class="footer-heading">Let's work<br>together.</h2>
-            <p class="footer-invite">Taking on one or two new projects at a time, fixed scope or embedded with your team, both on a day rate. Tell me what you're working on.</p>
-            <p class="footer-email-line">
-              <button class="footer-email-btn" id="footerCopyEmail" aria-label="Copy email address, akshanshdeva@gmail.com">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                <span id="footerCopyEmailText" aria-live="polite">akshanshdeva@gmail.com</span>
-              </button><span class="footer-email-note"><span class="footer-email-comma">,</span> I reply within a day.</span>
-            </p>
-            <p class="footer-links-row">
-              <a href="https://www.linkedin.com/in/akshansh-deva/" target="_blank" rel="noopener" class="footer-contact-link">LinkedIn &#8599;</a>
-              <span class="footer-dot" aria-hidden="true">&middot;</span>
-              <a href="https://x.com/akshansh_deva" target="_blank" rel="noopener" class="footer-contact-link">X &#8599;</a>
-              <span class="footer-dot" aria-hidden="true">&middot;</span>
-              <a href="assets/akshansh-deva-resume.pdf" class="footer-contact-link" target="_blank" rel="noopener">Resume &#8595;</a>
-            </p>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <span class="footer-logo">Akshansh Deva <span class="footer-copy">&copy; 2026</span></span>
-          <span class="footer-vibe">Designed and built with Claude Code &amp; Figma MCP</span>
-          <a href="#hero" class="footer-back-top">&#8593; Back to top</a>
-        </div>
-      </div>
-    </footer>
-
   </main>
 
+  <footer class="s-foot" id="contact">
+    <div class="wrap">
+      <h2 class="s-foot-h"><span class="g">Let&rsquo;s work</span> <span>together.</span></h2>
+      <p class="s-foot-invite">Taking on one or two new projects at a time, fixed scope or embedded with your team, both on a day rate. Tell me what you're working on.</p>
+      <div class="s-foot-actions">
+        <button class="s-btn s-btn-primary s-foot-email" data-copy-email aria-label="Copy email address, akshanshdeva@gmail.com">
+          <span class="s-copy-icon" aria-hidden="true"><svg class="idle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><svg class="done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
+          <span class="s-copy-label" aria-live="polite"><span class="idle">akshanshdeva@gmail.com</span><span class="done">Copied</span></span>
+        </button>
+        <span class="s-foot-note">I reply within a day.</span>
+      </div>
+      <ul class="s-foot-links">
+        <li><a href="https://www.linkedin.com/in/akshansh-deva/" target="_blank" rel="noopener">LinkedIn &#8599;</a></li>
+        <li><a href="https://x.com/akshansh_deva" target="_blank" rel="noopener">X &#8599;</a></li>
+        <li><a href="assets/akshansh-deva-resume.pdf" target="_blank" rel="noopener">Resume &#8595;</a></li>
+      </ul>
+      <div class="s-foot-bottom">
+        <span>Akshansh Deva &copy; 2026</span>
+        <span>Designed and built with Claude Code &amp; Figma MCP</span>
+        <a href="#">&#8593; Back to top</a>
+      </div>
+    </div>
+  </footer>
+
   <script src="site.js"></script>
-  <script>
-    // Show fallback text when logo images fail to load
-    document.querySelectorAll('.company-logo').forEach(function(img) {
-      img.addEventListener('error', function() {
-        this.style.display = 'none';
-        var fallback = this.parentElement.querySelector('.company-logo-fallback');
-        if (fallback) fallback.style.display = 'inline';
-      });
-    });
-
-    // Copy email: each button confirms in place (wireCopyButton, from site.js).
-    wireCopyButton('copyEmail', 'copyEmailText');
-    wireCopyButton('navCopyEmail', 'navCopyEmailText');
-    wireCopyButton('footerCopyEmail', 'footerCopyEmailText');
-
-
-    // Glassy nav on scroll
-    (function() {
-      var nav = document.querySelector('.nav');
-      if (!nav) return;
-      function onScroll() {
-        if (window.scrollY > 24) {
-          nav.classList.add('scrolled');
-        } else {
-          nav.classList.remove('scrolled');
-        }
-      }
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll(); // run once on load
-    })();
-
-    // Show/hide nav ghost CTAs based on hero CTA visibility
-    (function() {
-      var heroCtas = document.getElementById('heroCtas');
-      var nav = document.querySelector('.nav');
-      if (!heroCtas || !nav) return;
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (!entry.isIntersecting) {
-            nav.classList.add('ctas-hidden');
-          } else {
-            nav.classList.remove('ctas-hidden');
-          }
-        });
-      }, { threshold: 0 });
-      observer.observe(heroCtas);
-    })();
-
-    // Photo tilt + grayscale→colour
-    (function() {
-      var wrap = document.getElementById('photoTilt');
-      if (!wrap) return;
-      var isHovered = false;
-
-      wrap.addEventListener('mouseenter', function() {
-        isHovered = true;
-      });
-
-      wrap.addEventListener('mouseleave', function() {
-        isHovered = false;
-        wrap.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)';
-      });
-
-      wrap.addEventListener('mousemove', function(e) {
-        if (!isHovered) return;
-        var rect = wrap.getBoundingClientRect();
-        var cx = rect.left + rect.width / 2;
-        var cy = rect.top + rect.height / 2;
-        var dx = (e.clientX - cx) / (rect.width / 2);
-        var dy = (e.clientY - cy) / (rect.height / 2);
-        var rotY = dx * 8;
-        var rotX = -dy * 6;
-        wrap.style.transform = 'perspective(800px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) scale(1.02)';
-      });
-    })();
-
-    // Back to top
-    document.querySelector('.footer-back-top').addEventListener('click', function(e) {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-      anchor.addEventListener('click', function(e) {
-        var target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-    });
-
-    // Active nav link on scroll
-    var sections = document.querySelectorAll('section[id], footer[id]');
-    var navLinks = document.querySelectorAll('.nav-link');
-    window.addEventListener('scroll', function() {
-      var scrollPos = window.scrollY + 120;
-      sections.forEach(function(section) {
-        if (scrollPos >= section.offsetTop && scrollPos < section.offsetTop + section.offsetHeight) {
-          var id = section.getAttribute('id');
-          navLinks.forEach(function(link) {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === '#' + id) link.classList.add('active');
-          });
-        }
-      });
-    });
-  </script>
-
-  <!-- Theme toggle -->
-  <script>
-    (function() {
-      var html = document.documentElement;
-      var btn = document.getElementById('themeToggle');
-      /* Theme is applied by the inline script in <head>; this only wires the toggle. */
-
-      btn.addEventListener('click', function() {
-        var isDark = html.getAttribute('data-theme') === 'dark';
-        if (isDark) {
-          html.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-        } else {
-          html.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-        }
-      });
-    })();
-  </script>
-
-  <!-- Rainbow cursor trail + click burst -->
-  <canvas id="cursorCanvas"></canvas>
-  <script>
-    (function() {
-      var canvas = document.getElementById('cursorCanvas');
-      var ctx = canvas.getContext('2d');
-
-      function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      resize();
-      window.addEventListener('resize', resize);
-
-      var particles = [];
-      var hue = 0;
-      var lastX = -999, lastY = -999;
-      var mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-
-
-      function TrailParticle(x, y, h) {
-        this.x = x; this.y = y; this.hue = h;
-        this.size = 2; // default — overridden by caller based on speed/idle
-        this.life = 1;
-        this.decay = 0.022 + Math.random() * 0.014;
-        this.vx = (Math.random() - 0.5) * 0.6;
-        this.vy = (Math.random() - 0.5) * 0.6;
-        this.type = 'trail';
-      }
-
-      function BurstParticle(x, y, h) {
-        this.x = x; this.y = y; this.hue = h;
-        this.size = Math.random() * 9 + 4;
-        this.life = 1;
-        this.decay = 0.016 + Math.random() * 0.014;
-        var angle = Math.random() * Math.PI * 2;
-        var speed = Math.random() * 8 + 2;
-        this.vx = Math.cos(angle) * speed;
-        this.vy = Math.sin(angle) * speed;
-        this.gravity = 0.2;
-        this.type = 'burst';
-      }
-
-      var lastMouseMoveTime = Date.now();
-      var idleHue = 0;
-      var idleFrame = 0;
-      var mouseSpeed = 0;
-
-      window.addEventListener('mousemove', function(e) {
-        mouseX = e.clientX; mouseY = e.clientY;
-        lastMouseMoveTime = Date.now();
-        idleFrame = 0;
-        var dx = e.clientX - lastX, dy = e.clientY - lastY;
-        var dist = Math.sqrt(dx*dx + dy*dy);
-        mouseSpeed = Math.min(dist, 30); // cap at 30px per event
-        if (dist > 5) {
-          hue = (hue + 4) % 360;
-          var p = new TrailParticle(e.clientX, e.clientY, hue);
-          p.size = Math.random() * 2.6 + 1.7 + mouseSpeed * 0.26; // 1.7–6px + speed bonus
-          particles.push(p);
-          lastX = e.clientX; lastY = e.clientY;
-        }
-      });
-
-      window.addEventListener('click', function(e) {
-        for (var i = 0; i < 32; i++) {
-          particles.push(new BurstParticle(e.clientX, e.clientY, (hue + i * 11) % 360));
-        }
-      });
-
-      // Clear burst particles when tab goes hidden so they don't resume on return
-      document.addEventListener('visibilitychange', function() {
-        if (document.visibilityState === 'hidden') {
-          particles = particles.filter(function(p) { return p.type !== 'burst'; });
-        }
-      });
-
-
-      function spawnIdleSpeck() {
-        var p = new TrailParticle(
-          mouseX + (Math.random() - 0.5) * 14,
-          mouseY + (Math.random() - 0.5) * 14,
-          idleHue
-        );
-        p.size  = Math.random() * 2.6 + 1.7;      // 1.7–4.3px — matches slow trail
-        p.decay = 0.006 + Math.random() * 0.004; // slow fade
-        p.vx    = (Math.random() - 0.5) * 0.4;
-        p.vy    = (Math.random() - 0.5) * 0.4;
-        particles.push(p);
-      }
-
-      function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Idle specks — start immediately when mouse stops
-        if (Date.now() - lastMouseMoveTime > 0) {
-          idleFrame++;
-          if (idleFrame % 10 === 0) {          // ~1 speck every 160ms
-            idleHue = (idleHue + 6) % 360;
-            spawnIdleSpeck();
-          }
-        }
-
-
-        for (var i = particles.length - 1; i >= 0; i--) {
-          var p = particles[i];
-          p.life -= p.decay;
-          p.x += p.vx;
-          p.y += p.vy;
-          if (p.type === 'burst') {
-            p.vy += p.gravity;
-            p.size *= 0.97;
-          }
-          if (p.life <= 0) { particles.splice(i, 1); continue; }
-
-          // Soft glow blur for trail, sharp for burst
-          if (p.type === 'trail') {
-            ctx.shadowBlur = 18;
-            ctx.shadowColor = 'hsl(' + p.hue + ',90%,62%)';
-          } else {
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = 'hsl(' + p.hue + ',90%,62%)';
-          }
-
-          ctx.globalAlpha = p.life * 0.8;
-          ctx.fillStyle = 'hsl(' + p.hue + ',90%,65%)';
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, Math.max(0.1, p.size * (p.type === 'trail' ? p.life : 1)), 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        ctx.shadowBlur = 0;
-        ctx.globalAlpha = 1;
-        requestAnimationFrame(animate);
-      }
-      animate();
-    })();
-  </script>
-
-
 </body>
 </html>
