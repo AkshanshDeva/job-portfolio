@@ -221,7 +221,7 @@ a.s-tile:active { scale: 0.99; }
 .s-tile.med .s-scene { background-image: url(assets/work/medwing-doctor.webp); background-size: 130% auto; background-position: 41% 98%; }
 .s-tile.oyo .s-scene { background-image: url(assets/work/oyo-flight.webp); background-size: auto 144%; background-position: 54% 70%; }
 .s-tile.onb .s-scene { background-image: url(assets/work/onb-phone.webp); background-size: auto 75.5%; background-position: center top 37px; }
-.s-tile.af  .s-scene { background-image: url(assets/work/airfocus-laptop.webp); background-size: auto 77%; background-position: center top 36px; }
+.s-tile.af  .s-scene { background-image: url(assets/work/airfocus-laptop.webp); background-size: auto 85%; background-position: center top 48px; }
 @media (max-width: 800px) {
   .s-tile.med .s-scene { background-size: auto 119%; background-position: 47% 100%; }
   .s-tile.oyo .s-scene { background-size: auto 170%; background-position: 54% 76%; }
