@@ -36,7 +36,7 @@
         <svg class="idle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
         <svg class="done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>
       </span>
-      <span class="s-copy-label" aria-live="polite"><span class="idle">Copy email</span><span class="done">Copied</span></span>
+      <span class="s-copy-label" aria-live="polite"><span class="idle">Copy email</span><span class="done" aria-hidden="true">Copied</span></span>
     </button>
     <!-- Phones only: the links and Copy email move into the sheet below. -->
     <button class="s-icon s-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
@@ -60,7 +60,7 @@
           <svg class="idle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
           <svg class="done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>
         </span>
-      <span class="s-copy-label" aria-live="polite"><span class="idle">Copy email</span><span class="done">Copied</span></span>
+      <span class="s-copy-label" aria-live="polite"><span class="idle">Copy email</span><span class="done" aria-hidden="true">Copied</span></span>
     </button>
   </div>
 
@@ -73,20 +73,24 @@
 
   <footer class="s-foot" id="contact">
     <div class="wrap">
-      <h2 class="s-foot-h"><span class="g">Let&rsquo;s work</span> <span>together.</span></h2>
-      <p class="s-foot-invite">Taking on one or two new projects at a time, fixed scope or embedded with your team, both on a day rate. Tell me what you're working on.</p>
-      <div class="s-foot-actions">
-        <button class="s-btn s-btn-primary s-foot-email" data-copy-email aria-label="Copy email address, akshanshdeva@gmail.com">
-          <span class="s-copy-icon" aria-hidden="true"><svg class="idle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><svg class="done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
-          <span class="s-copy-label" aria-live="polite"><span class="idle">akshanshdeva@gmail.com</span><span class="done">Copied</span></span>
-        </button>
-        <span class="s-foot-note">I reply within a day.</span>
+      <div class="s-foot-main">
+        <div>
+          <h2 class="s-foot-h"><span class="g">Let&rsquo;s work</span> <span>together.</span></h2>
+          <p class="s-foot-invite">Taking on one or two new projects at a time, fixed scope or embedded with your team, both on a day rate. Tell me what you're working on.</p>
+          <div class="s-foot-actions">
+            <button class="s-btn s-btn-primary s-foot-email" data-copy-email aria-label="Copy email address, akshanshdeva@gmail.com">
+              <span class="s-copy-icon" aria-hidden="true"><svg class="idle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><svg class="done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
+              <span class="s-copy-label" aria-live="polite"><span class="idle">akshanshdeva@gmail.com</span><span class="done" aria-hidden="true">Copied</span></span>
+            </button>
+            <span class="s-foot-note">I reply within a day.</span>
+          </div>
+        </div>
+        <ul class="s-foot-links">
+          <li><a href="https://www.linkedin.com/in/akshansh-deva/" target="_blank" rel="noopener">LinkedIn &#8599;</a></li>
+          <li><a href="https://x.com/akshansh_deva" target="_blank" rel="noopener">X &#8599;</a></li>
+          <li><a href="../assets/akshansh-deva-resume.pdf" target="_blank" rel="noopener">Resume &#8595;</a></li>
+        </ul>
       </div>
-      <ul class="s-foot-links">
-        <li><a href="https://www.linkedin.com/in/akshansh-deva/" target="_blank" rel="noopener">LinkedIn &#8599;</a></li>
-        <li><a href="https://x.com/akshansh_deva" target="_blank" rel="noopener">X &#8599;</a></li>
-        <li><a href="../assets/akshansh-deva-resume.pdf" target="_blank" rel="noopener">Resume &#8595;</a></li>
-      </ul>
       <div class="s-foot-bottom">
         <span>Akshansh Deva &copy; 2026</span>
         <span>Designed and built with Claude Code &amp; Figma MCP</span>

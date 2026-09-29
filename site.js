@@ -57,23 +57,36 @@ function writeClipboard(text) {
     if (e.key === 'Escape' && isOpen) { setOpen(false); btn.focus(); }
   });
 
-  // Drag down to dismiss: the sheet follows the finger, and closes past 80px.
-  var startY = null;
+  // Drag down to dismiss. The sheet follows one finger; pulling up meets resistance instead
+  // of a wall; letting go closes it if it travelled past 80px or was flicked down fast.
+  var startY = null, startT = 0;
+  function endDrag(dy) {
+    startY = null;
+    menu.classList.remove('is-dragging');
+    var velocity = dy / Math.max(1, Date.now() - startT); // px per ms
+    if (dy > 80 || (dy > 10 && velocity > 0.11)) setOpen(false); else menu.style.transform = '';
+  }
   menu.addEventListener('touchstart', function(e) {
+    if (e.touches.length > 1) return; // a second finger shouldn't restart the drag
     startY = e.touches[0].clientY;
+    startT = Date.now();
     menu.classList.add('is-dragging');
   }, { passive: true });
   menu.addEventListener('touchmove', function(e) {
     if (startY === null) return;
-    var dy = Math.max(0, e.touches[0].clientY - startY);
+    var dy = e.touches[0].clientY - startY;
+    if (dy < 0) dy *= 0.2; // rubber-band upward
     menu.style.transform = 'translateY(' + dy + 'px)';
   }, { passive: true });
   menu.addEventListener('touchend', function(e) {
+    if (startY === null || e.touches.length) return;
+    endDrag(e.changedTouches[0].clientY - startY);
+  });
+  // The OS can cancel a touch mid-drag (a call, a system gesture); without this the sheet
+  // stayed half-dragged with its transitions switched off.
+  menu.addEventListener('touchcancel', function() {
     if (startY === null) return;
-    var dy = e.changedTouches[0].clientY - startY;
-    startY = null;
-    menu.classList.remove('is-dragging');
-    if (dy > 80) setOpen(false); else menu.style.transform = '';
+    endDrag(0);
   });
 
   // Leaving phone width with the sheet open would strand it open.
@@ -85,10 +98,16 @@ function writeClipboard(text) {
 (function() {
   document.querySelectorAll('[data-copy-email]').forEach(function(btn) {
     btn.addEventListener('click', function() {
+      // Only the visible label is exposed, so screen readers hear "Copy email", then "Copied".
+      var idle = btn.querySelector('.s-copy-label .idle'), done = btn.querySelector('.s-copy-label .done');
+      function setCopied(on) {
+        btn.classList.toggle('is-copied', on);
+        if (idle && done) { idle.setAttribute('aria-hidden', String(on)); done.setAttribute('aria-hidden', String(!on)); }
+      }
       writeClipboard(EMAIL).then(function() {
-        btn.classList.add('is-copied');
+        setCopied(true);
         clearTimeout(btn._reset);
-        btn._reset = setTimeout(function() { btn.classList.remove('is-copied'); }, 2000);
+        btn._reset = setTimeout(function() { setCopied(false); }, 2000);
       });
     });
   });

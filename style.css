@@ -29,6 +29,13 @@
   color-scheme: light;
 }
 
+/* Motion curves, from Emil Kowalski's set: a strong ease-out for UI, and the iOS drawer curve. */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 * { box-sizing: border-box; margin: 0; }
 html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
 body {
@@ -92,7 +99,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .s-copy-icon svg { grid-area: 1 / 1; width: 14px; height: 14px; transition: opacity .2s, transform .25s cubic-bezier(.2, .7, .2, 1); }
 .s-copy-icon .done { opacity: 0; transform: scale(.6); }
 .is-copied .s-copy-icon .idle { opacity: 0; transform: scale(.6); }
-.is-copied .s-copy-icon .done { opacity: 1; transform: none; }
+.is-copied .s-copy-icon .done { opacity: 1; transform: none; transition-timing-function: ease, var(--ease-pop); }
 .s-nav .s-btn { gap: 6px; }
 .s-ctas .s-copy-icon svg { width: 16px; height: 16px; }
 .s-foot-email .s-copy-icon svg { width: 18px; height: 18px; }
@@ -155,10 +162,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 .s-funnel { display: grid; gap: 9px; }
 .s-stage { display: grid; grid-template-columns: 96px 1fr; align-items: center; gap: 12px; color: var(--muted); }
-.s-bar { position: relative; display: block; width: var(--w); height: 26px; border-radius: 8px; background: var(--line); }
+.s-bar { position: relative; display: block; width: var(--w); height: 26px; margin: 0 auto; border-radius: 6px; background: var(--line); }
 .s-stage.is-on { color: var(--ink); font-weight: 600; }
 .s-stage.is-on .s-bar { background: var(--ink); }
-.s-bar em { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-style: normal; font-size: 12px; font-weight: 500; color: var(--bg); }
+.s-bar em { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-style: normal; font-size: 12px; font-weight: 500; color: var(--bg); white-space: nowrap; }
 .s-rules { display: grid; gap: 8px; }
 .s-rule {
   display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 12px;
@@ -179,7 +186,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .s-stage { grid-template-columns: 78px 1fr; }
   .s-rule small { display: none; }
 }
-@media (max-width: 800px) { .s-spec { grid-template-columns: 1fr; } }
+@media (max-width: 800px) { .s-spec { grid-template-columns: minmax(0, 1fr); } }
 
 /* ---------- Work tiles ---------- */
 .s-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -190,7 +197,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
   border-radius: 28px;
   aspect-ratio: 1 / 1.04;
   --wall: var(--af-wall); --floor: var(--af-floor);
+  transition: scale 160ms var(--ease-out);
 }
+/* Press feedback: the tile gives slightly before the case study opens. The scale property
+   (not transform) keeps it clear of the picture's own hover transform. */
+a.s-tile:active { scale: 0.99; }
 /* Slightly taller wide tiles, so the airfocus keyboard can show above the glass. */
 .s-tile.wide { grid-column: 1 / -1; aspect-ratio: 16 / 9.05; }
 .s-tile::before {
@@ -205,21 +216,29 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* Scenes, as on Bricx: photographed mockups (Medwing ATS, OYO) alternate with a device on a
    brand tint (airfocus, onboarding). Each crop keeps the screen clear of the caption; the
    empty .s-shot still sets the tile's height on phones. */
-.s-scene { position: absolute; inset: 0; z-index: -1; background-repeat: no-repeat; transition: filter .4s; }
-a.s-tile:hover .s-scene { filter: brightness(1.04); }
+.s-scene { position: absolute; inset: 0; z-index: -1; background-repeat: no-repeat; transform-origin: 50% 60%; transition: transform 500ms var(--ease-out); }
+
 .s-tile.med .s-scene { background-image: url(assets/work/medwing-doctor.webp); background-size: 130% auto; background-position: 41% 98%; }
 .s-tile.oyo .s-scene { background-image: url(assets/work/oyo-flight.webp); background-size: auto 144%; background-position: 54% 70%; }
 .s-tile.onb .s-scene { background-image: url(assets/work/onb-phone.webp); background-size: auto 75.5%; background-position: center top 37px; }
+.s-tile.af  .s-scene { background-image: url(assets/work/airfocus-laptop.webp); background-size: auto 77%; background-position: center top 36px; }
 @media (max-width: 800px) {
   .s-tile.med .s-scene { background-size: auto 119%; background-position: 47% 100%; }
   .s-tile.oyo .s-scene { background-size: auto 170%; background-position: 54% 76%; }
   .s-tile.onb .s-scene { background-size: auto 73.4%; background-position: center top 29px; }
+  .s-tile.af  .s-scene { background-size: 90% auto; background-position: center top 28px; }
 }
+/* On the tints the glass is a little more opaque, with darker small text, because the laptop's
+   keyboard and the phone frame sit right behind the caption. Keeps 13px text above 4.5:1. */
+.s-tile.af .s-glass, .s-tile.onb .s-glass { --glass: rgba(255, 255, 255, 0.64); --muted: #56565b; }
+.s-tile.af .s-glass { --muted: #48484d; } /* the keyboard sits directly behind its company label */
 /* Over a photo the glass is dark, so the caption reads on any part of the scene. */
 .s-tile.med .s-glass, .s-tile.oyo .s-glass {
   --glass: rgba(24, 24, 26, 0.42); --glass-edge: rgba(255, 255, 255, .18); --glass-pill: rgba(255, 255, 255, .16);
   --muted: rgba(255, 255, 255, .76); color: #fff;
 }
+/* The white coat and the table turn the default dark glass muddy; go darker so the title holds. */
+.s-tile.med .s-glass { --glass: rgba(20, 20, 22, 0.6); }
 
 /* The device fills whatever height the caption leaves, and its base tucks
    --tuck under the glass. The renders carry side padding in their canvas,
@@ -229,25 +248,6 @@ a.s-tile:hover .s-scene { filter: brightness(1.04); }
   position: relative; flex: 1; min-height: 0;
   margin: 4% 0 calc(-1 * var(--tuck));
 }
-.s-dev {
-  /* Sized off the slot height, growing upward from a bottom edge that sits below the slot, under the glass. */
-  position: absolute; left: 50%; bottom: -20%;
-  height: 125.4%; width: auto; max-width: none;
-  transform: translateX(-50%);
-  transition: transform .7s cubic-bezier(.2, .7, .2, 1);
-}
-a.s-tile:hover .s-dev { transform: translateX(-50%) translateY(-8px); }
-/* airfocus keeps the same pixel size as before the tile grew, lifted so its keyboard shows
-   while the render's cut-off edge stays under the glass. */
-.s-tile.af .s-dev { height: 111.4%; bottom: -2%; }
-@media (max-width: 800px) { .s-tile.af .s-dev { bottom: -20%; } }
-/* The laptop renders bake a drop shadow that runs to the canvas edge; fade the
-   outer 11% (outside the bezel) so the cut-off edge never shows. */
-.s-tile.af .s-dev {
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 11.5%, #000 88.5%, transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0, #000 11.5%, #000 88.5%, transparent 100%);
-}
-
 /* The caption is a strip of glass laid over the base of the device, with the result
    sitting on it as a tab. Tab and strip are one glass surface: studio.js measures the
    tab and writes the combined outline (rounded inner corner included) as --glass-mask
@@ -310,8 +310,8 @@ a.s-tile:hover .s-dev { transform: translateX(-50%) translateY(-8px); }
   .s-grid > .s-tile:not(.wide) .s-cap-side { grid-area: side; }
 }
 .s-view { font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
-.s-view svg { width: 14px; height: 14px; transition: transform .2s; }
-a.s-tile:hover .s-view svg { transform: translate(2px, -2px); }
+.s-view svg { width: 14px; height: 14px; transition: transform 300ms var(--ease-out); }
+
 
 
 .s-soon { font-size: 13px; font-weight: 500; color: var(--muted); display: inline-flex; gap: 6px; align-items: center; }
@@ -324,6 +324,11 @@ a.s-tile:hover .s-view svg { transform: translate(2px, -2px); }
   .s-shot { flex: none; height: clamp(220px, 68vw, 440px); }
   .s-cap { grid-template-columns: 1fr; }
   .s-cap-side { align-items: flex-start; }
+}
+/* The smallest phones (320px): let the big email button shrink instead of pushing the page wide. */
+@media (max-width: 360px) {
+  .s-foot-email { max-width: 100%; padding: 13px 16px; font-size: 15px; }
+  .s-foot-email .s-copy-label { min-width: 0; }
 }
 /* ---------- Phone menu: bottom sheet (behaviour lives in site.js) ---------- */
 @media (min-width: 641px) { .s-scrim, .s-sheet { display: none; } }
@@ -344,9 +349,10 @@ a.s-tile:hover .s-view svg { transform: translate(2px, -2px); }
   background: var(--surface);
   box-shadow: inset 0 0 0 1px var(--line), 0 -8px 40px rgba(0, 0, 0, .18);
   transform: translateY(calc(100% + 16px)); visibility: hidden;
-  transition: transform .36s cubic-bezier(.22, 1, .36, 1), visibility 0s linear .36s;
+  /* Closing is the system responding, so it's quicker than the entrance. */
+  transition: transform 240ms var(--ease-drawer), visibility 0s linear 240ms;
 }
-.s-sheet.is-open { transform: none; visibility: visible; transition: transform .36s cubic-bezier(.22, 1, .36, 1); }
+.s-sheet.is-open { transform: none; visibility: visible; transition: transform 360ms var(--ease-drawer); }
 .s-sheet.is-dragging { transition: none; }
 .s-sheet-handle { width: 36px; height: 4px; border-radius: 2px; background: var(--line); margin: 0 auto 6px; }
 .s-sheet-links a {
@@ -362,7 +368,9 @@ a.s-tile:hover .s-view svg { transform: translate(2px, -2px); }
   .s-nav .s-links { display: none; }
   .s-nav .s-nav-copy { display: none; }
   .s-menu-btn { display: grid; }
-  .s-logos { justify-content: center; width: 100%; }
+  /* Five logos wrap 3 + 2 here; drop Delightree (it's in Experience) and set the rest 2 x 2. */
+  .s-logos { display: grid; grid-template-columns: 1fr 1fr; justify-items: center; gap: 20px 24px; width: 100%; }
+  .s-logo-wide-only { display: none; }
 }
 
 /* ---------- Testimonials: spotlight ---------- */
@@ -395,7 +403,7 @@ a.s-tile:hover .s-view svg { transform: translate(2px, -2px); }
   transition: filter .4s;
 }
 .s-strip.on img { filter: grayscale(1) contrast(1.05); }
-.s-strip:not(.on):hover img { filter: grayscale(1) contrast(1.05) brightness(.8); }
+
 .s-strip span {
   position: absolute; left: 50%; bottom: 16px;
   writing-mode: vertical-rl; transform: translateX(-50%) rotate(180deg);
@@ -455,7 +463,7 @@ a.s-tile:hover .s-view svg { transform: translate(2px, -2px); }
   transform: scale(1.18); transform-origin: 50% 36%;
 }
 @media (max-width: 800px) {
-  .s-about { grid-template-columns: 1fr; }
+  .s-about { grid-template-columns: minmax(0, 1fr); }
   .s-about-photo { max-width: 420px; }
 }
 
@@ -481,7 +489,16 @@ a.s-tile:hover .s-view svg { transform: translate(2px, -2px); }
 
 /* ---------- Footer ---------- */
 /* The closing moment echoes the hero: grey then ink, then one clear action. */
-.s-foot { margin-top: clamp(80px, 11vw, 144px); padding: clamp(56px, 8vw, 104px) 0 32px; border-top: 1px solid var(--line); }
+.s-foot { margin-top: clamp(64px, 8vw, 104px); padding-bottom: 32px; }
+/* The closing panel: the page's one dark surface, shaped like the work tiles. Tokens flip
+   inside it so the hero echo (grey, then white) and the buttons carry over unchanged. */
+.s-foot-main {
+  --ink: #ffffff; --muted: rgba(255, 255, 255, .76);
+  --btn-bg: #ffffff; --btn-ink: #1d1d1f;
+  padding: clamp(40px, 7vw, 88px) clamp(24px, 6vw, 72px);
+  border-radius: 28px;
+  background: #1d1d1f; color: var(--ink);
+}
 .s-foot-h {
   font: 800 clamp(48px, 8vw, 104px)/1 var(--display);
   letter-spacing: -0.031em;
@@ -494,14 +511,28 @@ a.s-tile:hover .s-view svg { transform: translate(2px, -2px); }
 .s-foot-email svg { width: 18px; height: 18px; }
 .s-foot-note { color: var(--muted); font-size: 15px; }
 .s-foot-links { display: flex; flex-wrap: wrap; gap: 8px 28px; list-style: none; padding: 0; margin: 40px 0 0; font-size: 16px; font-weight: 500; }
+/* Wide screens: the links fill the right half, stacked and set on the email's baseline. */
+@media (min-width: 901px) {
+  .s-foot-main { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 48px; }
+  .s-foot-links { flex-direction: column; align-items: flex-end; gap: 10px; margin: 0 0 6px; font: 600 clamp(22px, 2.2vw, 28px)/1.2 var(--display); letter-spacing: -0.015em; }
+}
 .s-foot-links a { color: var(--ink); border-bottom: 1px solid transparent; transition: border-color .2s; }
 .s-foot-links a:hover { border-color: currentColor; }
 .s-foot-bottom {
   display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px;
-  margin-top: clamp(64px, 9vw, 112px); padding-top: 20px; border-top: 1px solid var(--line);
+  margin-top: 24px;
   font-size: 13px; color: var(--muted);
 }
 .s-foot-bottom a:hover { color: var(--ink); }
+
+/* Hover motion only where a real pointer hovers; on touch a tap would leave it stuck on. */
+@media (hover: hover) and (pointer: fine) {
+  /* One hover for every linked work card: the picture pushes in 3%
+     and the case-study arrow nudges toward the link. The coming-soon card isn't a link. */
+  a.s-tile:hover .s-scene { transform: scale(1.03); }
+  a.s-tile:hover .s-view svg { transform: translate(3px, -3px); }
+  .s-strip:not(.on):hover img { filter: grayscale(1) contrast(1.05) brightness(.8); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0s !important; }

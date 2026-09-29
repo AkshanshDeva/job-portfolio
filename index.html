@@ -36,7 +36,7 @@
         <svg class="idle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
         <svg class="done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>
       </span>
-      <span class="s-copy-label" aria-live="polite"><span class="idle">Copy email</span><span class="done">Copied</span></span>
+      <span class="s-copy-label" aria-live="polite"><span class="idle">Copy email</span><span class="done" aria-hidden="true">Copied</span></span>
     </button>
     <!-- Phones only: the links and Copy email move into the sheet below. -->
     <button class="s-icon s-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
@@ -60,7 +60,7 @@
           <svg class="idle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
           <svg class="done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>
         </span>
-      <span class="s-copy-label" aria-live="polite"><span class="idle">Copy email</span><span class="done">Copied</span></span>
+      <span class="s-copy-label" aria-live="polite"><span class="idle">Copy email</span><span class="done" aria-hidden="true">Copied</span></span>
     </button>
   </div>
 
@@ -71,7 +71,7 @@
         <div class="s-ctas">
           <button class="s-btn s-btn-primary" data-copy-email>
             <span class="s-copy-icon" aria-hidden="true"><svg class="idle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><svg class="done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
-            <span class="s-copy-label" aria-live="polite"><span class="idle">Copy email</span><span class="done">Copied</span></span>
+            <span class="s-copy-label" aria-live="polite"><span class="idle">Copy email</span><span class="done" aria-hidden="true">Copied</span></span>
           </button>
           <a href="https://www.linkedin.com/in/akshansh-deva/" class="s-btn s-btn-secondary" target="_blank" rel="noopener">Message on LinkedIn</a>
         </div>
@@ -80,7 +80,7 @@
           <li><img class="logo-lg" src="assets/logos/bharatpe.svg" alt="BharatPe"></li>
           <li><img src="assets/logos/airfocus.svg" alt="airfocus"></li>
           <li><img src="assets/logos/medwing.svg" alt="Medwing"></li>
-          <li><img class="logo-lg" src="assets/logos/delightree.svg" alt="Delightree"></li>
+          <li class="s-logo-wide-only"><img class="logo-lg" src="assets/logos/delightree.svg" alt="Delightree"></li>
         </ul>
       </div>
     </section>
@@ -93,8 +93,8 @@
           <div class="s-viz" aria-hidden="true">
             <div class="s-funnel">
               <div class="s-stage"><span>Acquisition</span><span class="s-bar" style="--w: 100%"></span></div>
-              <div class="s-stage is-on"><span>Activation</span><span class="s-bar" style="--w: 84%"><em>The one metric</em></span></div>
-              <div class="s-stage"><span>Retention</span><span class="s-bar" style="--w: 66%"></span></div>
+              <div class="s-stage"><span>Activation</span><span class="s-bar" style="--w: 84%"></span></div>
+              <div class="s-stage is-on"><span>Retention</span><span class="s-bar" style="--w: 66%"><em>Your team&rsquo;s focus</em></span></div>
               <div class="s-stage"><span>Referral</span><span class="s-bar" style="--w: 48%"></span></div>
               <div class="s-stage"><span>Revenue</span><span class="s-bar" style="--w: 36%"></span></div>
             </div>
@@ -141,7 +141,8 @@
         </a>
 
         <a class="s-tile wide af" href="https://www.figma.com/proto/kHhALZPvUCW59NCj1zQX9s/Design?page-id=208%3A2&node-id=742-60298&viewport=4095%2C4592%2C0.42&t=FwS5oFgNgDFOm6B6-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=797%3A101088" target="_blank" rel="noopener">
-          <div class="s-shot"><img class="s-dev" src="assets/airfocus-cover.png" alt="airfocus workspace on a laptop"></div>
+          <span class="s-scene" role="img" aria-label="airfocus workspace on a laptop"></span>
+          <div class="s-shot" aria-hidden="true"></div>
           <div class="s-glass">
             <p class="s-metric"><span>17% new business from expansion</span></p>
             <div class="s-cap">
@@ -304,20 +305,24 @@
 
   <footer class="s-foot" id="contact">
     <div class="wrap">
-      <h2 class="s-foot-h"><span class="g">Let&rsquo;s work</span> <span>together.</span></h2>
-      <p class="s-foot-invite">Taking on one or two new projects at a time, fixed scope or embedded with your team, both on a day rate. Tell me what you're working on.</p>
-      <div class="s-foot-actions">
-        <button class="s-btn s-btn-primary s-foot-email" data-copy-email aria-label="Copy email address, akshanshdeva@gmail.com">
-          <span class="s-copy-icon" aria-hidden="true"><svg class="idle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><svg class="done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
-          <span class="s-copy-label" aria-live="polite"><span class="idle">akshanshdeva@gmail.com</span><span class="done">Copied</span></span>
-        </button>
-        <span class="s-foot-note">I reply within a day.</span>
+      <div class="s-foot-main">
+        <div>
+          <h2 class="s-foot-h"><span class="g">Let&rsquo;s work</span> <span>together.</span></h2>
+          <p class="s-foot-invite">Taking on one or two new projects at a time, fixed scope or embedded with your team, both on a day rate. Tell me what you're working on.</p>
+          <div class="s-foot-actions">
+            <button class="s-btn s-btn-primary s-foot-email" data-copy-email aria-label="Copy email address, akshanshdeva@gmail.com">
+              <span class="s-copy-icon" aria-hidden="true"><svg class="idle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><svg class="done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>
+              <span class="s-copy-label" aria-live="polite"><span class="idle">akshanshdeva@gmail.com</span><span class="done" aria-hidden="true">Copied</span></span>
+            </button>
+            <span class="s-foot-note">I reply within a day.</span>
+          </div>
+        </div>
+        <ul class="s-foot-links">
+          <li><a href="https://www.linkedin.com/in/akshansh-deva/" target="_blank" rel="noopener">LinkedIn &#8599;</a></li>
+          <li><a href="https://x.com/akshansh_deva" target="_blank" rel="noopener">X &#8599;</a></li>
+          <li><a href="assets/akshansh-deva-resume.pdf" target="_blank" rel="noopener">Resume &#8595;</a></li>
+        </ul>
       </div>
-      <ul class="s-foot-links">
-        <li><a href="https://www.linkedin.com/in/akshansh-deva/" target="_blank" rel="noopener">LinkedIn &#8599;</a></li>
-        <li><a href="https://x.com/akshansh_deva" target="_blank" rel="noopener">X &#8599;</a></li>
-        <li><a href="assets/akshansh-deva-resume.pdf" target="_blank" rel="noopener">Resume &#8595;</a></li>
-      </ul>
       <div class="s-foot-bottom">
         <span>Akshansh Deva &copy; 2026</span>
         <span>Designed and built with Claude Code &amp; Figma MCP</span>
