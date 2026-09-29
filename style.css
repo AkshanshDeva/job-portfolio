@@ -299,6 +299,16 @@ a.s-tile:hover .s-dev { transform: translateX(-50%) translateY(-8px); }
 .s-cap-title { font: 700 clamp(18px, 1.8vw, 23px)/1.25 var(--display); letter-spacing: -0.015em; margin: 2px 0 8px; max-width: 34ch; }
 .s-cap-tags { font-size: 13px; color: var(--muted); }
 .s-cap-side { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+/* Half-width tiles: the title runs the full width of the strip, and "View case study" drops to
+   the tags line, so titles wrap to two lines and both captions in a row match. */
+@media (min-width: 801px) {
+  .s-grid > .s-tile:not(.wide) .s-cap { grid-template-areas: "co co" "title title" "tags side"; align-items: baseline; row-gap: 0; }
+  .s-grid > .s-tile:not(.wide) .s-cap > div:first-child { display: contents; }
+  .s-grid > .s-tile:not(.wide) .s-cap-co { grid-area: co; }
+  .s-grid > .s-tile:not(.wide) .s-cap-title { grid-area: title; max-width: none; }
+  .s-grid > .s-tile:not(.wide) .s-cap-tags { grid-area: tags; }
+  .s-grid > .s-tile:not(.wide) .s-cap-side { grid-area: side; }
+}
 .s-view { font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
 .s-view svg { width: 14px; height: 14px; transition: transform .2s; }
 a.s-tile:hover .s-view svg { transform: translate(2px, -2px); }
