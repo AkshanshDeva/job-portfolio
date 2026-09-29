@@ -1,4 +1,4 @@
-/* Site styles. Light and dark themes; the theme is set on <html data-theme> before first paint. */
+/* Site styles. Light theme only. */
 
 :root {
   --bg: #f5f5f7;
@@ -16,18 +16,10 @@
   --logo-filter: grayscale(1) brightness(0);
   --logo-opacity: 0.42;
 
-  /* Studio backdrops: a lit wall that curves into a floor. Soft tints are drawn from each
-     product's CTA colour (Medwing ATS #925CC7, airfocus #318EFF, OYO #DF2023, Medwing
-     onboarding #DBF5F1); rich scenes are the saturated version; plain is neutral grey. */
-  --med-wall: #eee7f6;   --med-floor: #dccdee;
+  /* Studio backdrops for the device tiles: a lit wall that curves into a floor, tinted from
+     each product's CTA colour (airfocus #318EFF, Medwing onboarding #DBF5F1). */
   --af-wall: #e6f0ff;    --af-floor: #cddffb;
-  --oyo-wall: #fbe8e7;   --oyo-floor: #f1cfcd;
   --onb-wall: #e3f6f2;   --onb-floor: #c9ebe4;
-  --plain-wall: #ededf0; --plain-floor: #dadadf;
-  --med-rich-wall: #9c68d1;  --med-rich-floor: #6b3ba3;
-  --af-rich-wall: #3f95ff;   --af-rich-floor: #1f63d6;
-  --oyo-rich-wall: #e5403f;  --oyo-rich-floor: #a8181b;
-  --onb-rich-wall: #c4eee5;  --onb-rich-floor: #8fd9c9;
   --light-spill: rgba(255, 255, 255, 0.55);
 
   --display: "Inter Tight", "Inter", system-ui, sans-serif;
@@ -35,35 +27,6 @@
   --gutter: clamp(16px, 4vw, 40px);
   --max: 1200px;
   color-scheme: light;
-}
-
-:root[data-theme="dark"] {
-  --bg: #000000;
-  --surface: #161617;
-  --ink: #f5f5f7;
-  --grey: #6e6e73;
-  --muted: #a1a1a6;
-  --line: #333336;
-  --glass: rgba(29, 29, 31, 0.46);
-  --glass-edge: rgba(255, 255, 255, 0.12);
-  --glass-pill: rgba(255, 255, 255, 0.12);
-  --btn-bg: #f5f5f7;
-  --btn-ink: #1d1d1f;
-  --focus: #2997ff;
-  --logo-filter: grayscale(1) brightness(0) invert(1);
-  --logo-opacity: 0.5;
-
-  --med-wall: #251c31;   --med-floor: #150f1d;
-  --af-wall: #15223b;    --af-floor: #0b1426;
-  --oyo-wall: #2f1717;   --oyo-floor: #1c0c0c;
-  --onb-wall: #14261f;   --onb-floor: #0b1714;
-  --plain-wall: #1d1d20; --plain-floor: #111113;
-  --med-rich-wall: #7040a6;  --med-rich-floor: #3e2163;
-  --af-rich-wall: #2168d6;   --af-rich-floor: #0f356f;
-  --oyo-rich-wall: #b0242a;  --oyo-rich-floor: #5c0c0e;
-  --onb-rich-wall: #2f6155;  --onb-rich-floor: #173a33;
-  --light-spill: rgba(255, 255, 255, 0.08);
-  color-scheme: dark;
 }
 
 * { box-sizing: border-box; margin: 0; }
@@ -102,9 +65,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .s-nav .s-links { display: flex; gap: 2px; }
 .s-icon { border: 0; background: transparent; display: grid; place-items: center; padding: 8px 10px; }
 .s-icon svg { width: 16px; height: 16px; }
-.s-icon .i-sun { display: none; }
-:root[data-theme="dark"] .s-icon .i-sun { display: block; }
-:root[data-theme="dark"] .s-icon .i-moon { display: none; }
 
 /* ---------- Buttons ---------- */
 .s-btn {
@@ -229,37 +189,36 @@ button { font: inherit; color: inherit; cursor: pointer; }
   padding: 14px;
   border-radius: 28px;
   aspect-ratio: 1 / 1.04;
-  --wall: var(--med-wall); --floor: var(--med-floor);
+  --wall: var(--af-wall); --floor: var(--af-floor);
 }
-.s-tile.wide { grid-column: 1 / -1; aspect-ratio: 16 / 8.4; }
+/* Slightly taller wide tiles, so the airfocus keyboard can show above the glass. */
+.s-tile.wide { grid-column: 1 / -1; aspect-ratio: 16 / 9.05; }
 .s-tile::before {
   content: ""; position: absolute; inset: 0; z-index: -2;
   background:
     radial-gradient(120% 70% at 50% 16%, var(--light-spill), transparent 60%),
     linear-gradient(180deg, var(--wall) 0%, var(--wall) 60%, var(--floor) 100%);
 }
-.s-tile.med { --wall: var(--med-wall); --floor: var(--med-floor); }
 .s-tile.af  { --wall: var(--af-wall);  --floor: var(--af-floor); }
-.s-tile.oyo { --wall: var(--oyo-wall); --floor: var(--oyo-floor); }
 .s-tile.onb { --wall: var(--onb-wall); --floor: var(--onb-floor); }
 
-/* Alternating scenes, as on Bricx: a saturated brand scene, then a quiet grey one.
-   Not in use yet (parked until real imagery): add data-scenes="alternate" to .s-grid to turn it on. */
-.s-grid[data-scenes="alternate"] .s-tile.med { --wall: var(--med-rich-wall); --floor: var(--med-rich-floor); }
-.s-grid[data-scenes="alternate"] .s-tile.oyo { --wall: var(--oyo-rich-wall); --floor: var(--oyo-rich-floor); }
-.s-grid[data-scenes="alternate"] .s-tile.af,
-.s-grid[data-scenes="alternate"] .s-tile.onb { --wall: var(--plain-wall); --floor: var(--plain-floor); }
-/* On a saturated scene the glass turns light-on-colour. */
-.s-grid[data-scenes="alternate"] .s-tile.med .s-glass,
-.s-grid[data-scenes="alternate"] .s-tile.oyo .s-glass {
-  --glass: color-mix(in srgb, var(--floor) 62%, transparent); --glass-edge: rgba(255, 255, 255, 0.3); --glass-pill: rgba(255, 255, 255, 0.2);
-  --muted: rgba(255, 255, 255, 0.78); color: #fff;
+/* Scenes, as on Bricx: photographed mockups (Medwing ATS, OYO) alternate with a device on a
+   brand tint (airfocus, onboarding). Each crop keeps the screen clear of the caption; the
+   empty .s-shot still sets the tile's height on phones. */
+.s-scene { position: absolute; inset: 0; z-index: -1; background-repeat: no-repeat; transition: filter .4s; }
+a.s-tile:hover .s-scene { filter: brightness(1.04); }
+.s-tile.med .s-scene { background-image: url(assets/work/medwing-doctor.webp); background-size: 130% auto; background-position: 41% 98%; }
+.s-tile.oyo .s-scene { background-image: url(assets/work/oyo-flight.webp); background-size: auto 144%; background-position: 54% 70%; }
+.s-tile.onb .s-scene { background-image: url(assets/work/onb-phone.webp); background-size: auto 75.5%; background-position: center top 37px; }
+@media (max-width: 800px) {
+  .s-tile.med .s-scene { background-size: auto 119%; background-position: 47% 100%; }
+  .s-tile.oyo .s-scene { background-size: auto 170%; background-position: 54% 76%; }
+  .s-tile.onb .s-scene { background-size: auto 73.4%; background-position: center top 29px; }
 }
-.s-grid[data-scenes="alternate"] .s-tile.med::before,
-.s-grid[data-scenes="alternate"] .s-tile.oyo::before {
-  background:
-    radial-gradient(110% 70% at 50% 14%, rgba(255, 255, 255, 0.28), transparent 62%),
-    linear-gradient(180deg, var(--wall) 0%, var(--wall) 55%, var(--floor) 100%);
+/* Over a photo the glass is dark, so the caption reads on any part of the scene. */
+.s-tile.med .s-glass, .s-tile.oyo .s-glass {
+  --glass: rgba(24, 24, 26, 0.42); --glass-edge: rgba(255, 255, 255, .18); --glass-pill: rgba(255, 255, 255, .16);
+  --muted: rgba(255, 255, 255, .76); color: #fff;
 }
 
 /* The device fills whatever height the caption leaves, and its base tucks
@@ -278,11 +237,13 @@ button { font: inherit; color: inherit; cursor: pointer; }
   transition: transform .7s cubic-bezier(.2, .7, .2, 1);
 }
 a.s-tile:hover .s-dev { transform: translateX(-50%) translateY(-8px); }
-/* Phones keep their size but sit lower. */
-.s-tile.oyo .s-dev, .s-tile.onb .s-dev { height: 125.4%; bottom: -25%; }
+/* airfocus keeps the same pixel size as before the tile grew, lifted so its keyboard shows
+   while the render's cut-off edge stays under the glass. */
+.s-tile.af .s-dev { height: 111.4%; bottom: -2%; }
+@media (max-width: 800px) { .s-tile.af .s-dev { bottom: -20%; } }
 /* The laptop renders bake a drop shadow that runs to the canvas edge; fade the
    outer 11% (outside the bezel) so the cut-off edge never shows. */
-.s-tile.med .s-dev, .s-tile.af .s-dev {
+.s-tile.af .s-dev {
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 11.5%, #000 88.5%, transparent 100%);
   mask-image: linear-gradient(90deg, transparent 0, #000 11.5%, #000 88.5%, transparent 100%);
 }
@@ -332,7 +293,6 @@ a.s-tile:hover .s-dev { transform: translateX(-50%) translateY(-8px); }
 a.s-tile:hover .s-view svg { transform: translate(2px, -2px); }
 
 
-.s-tile.soon .s-dev { opacity: .55; filter: grayscale(.4); }
 .s-soon { font-size: 13px; font-weight: 500; color: var(--muted); display: inline-flex; gap: 6px; align-items: center; }
 .s-soon svg { width: 13px; height: 13px; }
 

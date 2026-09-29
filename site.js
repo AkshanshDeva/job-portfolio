@@ -1,4 +1,4 @@
-// Shared by every page: email copy, theme toggle, phone menu, and the homepage's work tiles and testimonials.
+// Shared by every page: email copy, phone menu, and the homepage's work tiles and testimonials.
 
 // Clipboard: the async API first, the older execCommand path if the browser refuses it.
 var EMAIL = 'akshanshdeva@gmail.com';
@@ -83,16 +83,6 @@ function writeClipboard(text) {
 })();
 
 (function() {
-  var html = document.documentElement;
-  var toggle = document.getElementById('themeToggle');
-  if (toggle) {
-    toggle.addEventListener('click', function() {
-      var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', next);
-      try { localStorage.setItem('theme', next); } catch (e) {}
-    });
-  }
-
   document.querySelectorAll('[data-copy-email]').forEach(function(btn) {
     btn.addEventListener('click', function() {
       writeClipboard(EMAIL).then(function() {
