@@ -244,13 +244,15 @@ a.s-tile:active { scale: 0.99; }
 .s-tile.oyo .s-scene { background-image: url(assets/work/oyo-flight.webp); background-size: auto 144%; background-position: 54% 70%; }
 .s-tile.onb .s-scene { background-image: url(assets/work/onb-phone.webp); background-size: auto 75.5%; background-position: center top 37px; }
 .s-tile.af  .s-scene { background-image: url(assets/work/airfocus-laptop.webp); background-size: auto 85%; background-position: center top 48px; }
-.s-tile.ais .s-scene { background-image: url(assets/work/ai-search-devices.webp); background-size: auto 88%; background-position: center top 40px; }
+/* AI search plays the case study's hero loop: the app window sits on the tint like the airfocus laptop. */
+.s-vid { position: absolute; left: 50%; top: 44px; width: 78%; height: auto; translate: -50% 0; border-radius: 14px; background: #fff;
+  box-shadow: 0 0 0 1px rgba(16, 40, 70, .08), 0 2px 6px rgba(16, 40, 70, .06), 0 24px 60px -18px rgba(16, 40, 70, .28); }
 @media (max-width: 800px) {
   .s-tile.med .s-scene { background-size: auto 119%; background-position: 47% 100%; }
   .s-tile.oyo .s-scene { background-size: auto 170%; background-position: 54% 76%; }
   .s-tile.onb .s-scene { background-size: auto 73.4%; background-position: center top 29px; }
   .s-tile.af  .s-scene { background-size: 90% auto; background-position: center top 28px; }
-  .s-tile.ais .s-scene { background-size: 94% auto; background-position: center top 24px; }
+  .s-vid { top: 24px; width: 90%; border-radius: 10px; }
 }
 /* On the tints the glass is a little more opaque, with darker small text, because the laptop's
    keyboard and the phone frame sit right behind the caption. Keeps 13px text above 4.5:1. */
