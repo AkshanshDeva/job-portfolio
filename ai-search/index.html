@@ -412,10 +412,11 @@ h3{font:600 clamp(22px,2.4vw,28px)/1.18 var(--display);letter-spacing:-.015em;ma
 
 /* results: each number answers the goal or a problem */
 .res{margin:56px 0 0;border-bottom:1px solid var(--line)}
-.res-row{display:grid;grid-template-columns:200px minmax(0,1fr) auto;gap:32px;align-items:center;padding:28px 0;border-top:1px solid var(--line)}
-.res-k{display:flex;flex-direction:column;gap:4px}
-.res-k b{font:600 14px/1.2 var(--text);color:var(--accent)}
-.res-k span{font-size:14px;color:var(--muted)}
+.res-probs{margin-top:120px}
+.res-goal{border-bottom:0}
+.res-goal .chart{margin:8px 0 0}
+.res-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:center;padding:28px 0;border-top:1px solid var(--line)}
+.res-k{display:block;margin-bottom:6px;font:600 14px/1.2 var(--text);color:var(--accent)}
 .res-t{margin:0;font-size:clamp(17px,1.6vw,20px);line-height:1.45;color:var(--ink);max-width:28em}
 .res-t small{display:block;margin-top:4px;font-size:14px;color:var(--muted)}
 .res-n{font:800 clamp(40px,4.4vw,60px)/1 var(--display);letter-spacing:-.04em;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
@@ -475,7 +476,7 @@ section[id],.approach[id]{scroll-margin-top:72px}
 
 
 /* results: customer quote */
-.rquote{margin:56px 0 0;padding:0 0 0 clamp(20px,2.4vw,32px);border-left:3px solid var(--accent)}
+.rquote{margin:120px 0 0;padding:0 0 0 clamp(20px,2.4vw,32px);border-left:3px solid var(--accent)}
 .rquote blockquote{margin:0;font:500 clamp(22px,2.4vw,30px)/1.35 var(--display);letter-spacing:-.015em;color:var(--ink);text-wrap:pretty;max-width:32em}
 .rquote figcaption{margin-top:14px;font-size:15px;color:var(--muted)}
 
@@ -1045,17 +1046,9 @@ section[id],.approach[id]{scroll-margin-top:72px}
 <section id="results">
   <p class="eyebrow"><i>05</i>Results</p>
   <h2 class="rv">Fewer AI searches, far better ones</h2>
-  <div class="res">
-    <div class="res-row res-main rv"><div class="res-k"><b>The goal</b><span>Talk to the knowledge base</span></div><p class="res-t">Users asking the knowledge base real questions<small>June to August</small></p><div class="res-n" data-count="68" data-pre="+" data-suf="%">+68%</div></div>
-    <div class="res-row rv"><div class="res-k"><b>Problem 1</b><span>Picking a mode first</span></div><p class="res-t">Repeat queries from people retyping in the wrong box<small>June to August</small></p><div class="res-n" data-count="90" data-pre="&minus;" data-suf="%">&minus;90%</div></div>
-    <div class="res-row rv"><div class="res-k"><b>Problem 2</b><span>No follow-ups</span></div><p class="res-t">Sessions that continue into a follow-up question<small>Every session was a single query before the relaunch</small></p><div class="res-n">1 in 4</div></div>
-  </div>
-
-  <figure class="rquote rv">
-    <blockquote>"Our location teams are finding answers themselves, so fewer routine questions are coming to HQ."</blockquote>
-    <figcaption>HQ team at a fitness franchisor with 200+ locations</figcaption>
-  </figure>
-  <div class="chart lc rv" id="chart">
+  <div class="res res-goal">
+    <div class="res-row res-main rv"><p class="res-t"><b class="res-k">The goal</b>Users asking the knowledge base real questions<small>June to August</small></p><div class="res-n" data-count="68" data-pre="+" data-suf="%">+68%</div></div>
+    <div class="chart lc rv" id="chart">
     <p class="hb-h">By August, almost every AI search user was asking real questions</p>
     <div class="lc-key"><span><i class="lc-q"></i>Real questions</span><span><i class="lc-k"></i>Keyword lookups</span></div>
     <div class="lc-wrap">
@@ -1081,6 +1074,16 @@ section[id],.approach[id]{scroll-margin-top:72px}
     </div>
     <div class="sr-only"><table><caption>Share of active AI search users by what they typed</caption><thead><tr><th scope="col">Month</th><th scope="col">Real questions</th><th scope="col">Keyword lookups</th></tr></thead><tbody><tr><th scope="row">June</th><td>55%</td><td>35%</td></tr><tr><th scope="row">July</th><td>60%</td><td>11%</td></tr><tr><th scope="row">August</th><td>94%</td><td>3%</td></tr><tr><th scope="row">September</th><td>94%</td><td>3%</td></tr><tr><th scope="row">October</th><td>95%</td><td>2%</td></tr></tbody></table></div>
   </div>
+  </div>
+  <div class="res res-probs">
+    <div class="res-row rv"><p class="res-t"><b class="res-k">Problem 1</b>Repeat queries from people retyping in the wrong box<small>June to August</small></p><div class="res-n" data-count="90" data-pre="&minus;" data-suf="%">&minus;90%</div></div>
+    <div class="res-row rv"><p class="res-t"><b class="res-k">Problem 2</b>Sessions that continue into a follow-up question<small>Every session was a single query before the relaunch</small></p><div class="res-n">1 in 4</div></div>
+  </div>
+
+  <figure class="rquote rv">
+    <blockquote>"Our location teams are finding answers themselves, so fewer routine questions are coming to HQ."</blockquote>
+    <figcaption>HQ team at a fitness franchisor with 200+ locations</figcaption>
+  </figure>
 
 </section>
 
