@@ -20,6 +20,7 @@
      each product's CTA colour (airfocus #318EFF, Medwing onboarding #DBF5F1). */
   --af-wall: #e6f0ff;    --af-floor: #cddffb;
   --onb-wall: #e3f6f2;   --onb-floor: #c9ebe4;
+  --ais-wall: #e8f4fb;   --ais-floor: #cfe7f5;  /* Delightree AI search, from its sky tint */
   --light-spill: rgba(255, 255, 255, 0.55);
 
   --display: "Inter Tight", "Inter", system-ui, sans-serif;
@@ -232,6 +233,7 @@ a.s-tile:active { scale: 0.99; }
 }
 .s-tile.af  { --wall: var(--af-wall);  --floor: var(--af-floor); }
 .s-tile.onb { --wall: var(--onb-wall); --floor: var(--onb-floor); }
+.s-tile.ais { --wall: var(--ais-wall); --floor: var(--ais-floor); }
 
 /* Scenes, as on Bricx: photographed mockups (Medwing ATS, OYO) alternate with a device on a
    brand tint (airfocus, onboarding). Each crop keeps the screen clear of the caption; the
@@ -242,15 +244,17 @@ a.s-tile:active { scale: 0.99; }
 .s-tile.oyo .s-scene { background-image: url(assets/work/oyo-flight.webp); background-size: auto 144%; background-position: 54% 70%; }
 .s-tile.onb .s-scene { background-image: url(assets/work/onb-phone.webp); background-size: auto 75.5%; background-position: center top 37px; }
 .s-tile.af  .s-scene { background-image: url(assets/work/airfocus-laptop.webp); background-size: auto 85%; background-position: center top 48px; }
+.s-tile.ais .s-scene { background-image: url(assets/work/ai-search-devices.webp); background-size: auto 88%; background-position: center top 40px; }
 @media (max-width: 800px) {
   .s-tile.med .s-scene { background-size: auto 119%; background-position: 47% 100%; }
   .s-tile.oyo .s-scene { background-size: auto 170%; background-position: 54% 76%; }
   .s-tile.onb .s-scene { background-size: auto 73.4%; background-position: center top 29px; }
   .s-tile.af  .s-scene { background-size: 90% auto; background-position: center top 28px; }
+  .s-tile.ais .s-scene { background-size: 94% auto; background-position: center top 24px; }
 }
 /* On the tints the glass is a little more opaque, with darker small text, because the laptop's
    keyboard and the phone frame sit right behind the caption. Keeps 13px text above 4.5:1. */
-.s-tile.af .s-glass, .s-tile.onb .s-glass { --glass: rgba(255, 255, 255, 0.64); --muted: #56565b; }
+.s-tile.af .s-glass, .s-tile.onb .s-glass, .s-tile.ais .s-glass { --glass: rgba(255, 255, 255, 0.64); --muted: #56565b; }
 .s-tile.af .s-glass { --muted: #48484d; } /* the keyboard sits directly behind its company label */
 /* Over a photo the glass is dark, so the caption reads on any part of the scene. */
 .s-tile.med .s-glass, .s-tile.oyo .s-glass {
@@ -310,6 +314,7 @@ a.s-tile:active { scale: 0.99; }
 .s-tile.af  { --accent: #318eff; }
 .s-tile.oyo { --accent: #ff6b6b; }
 .s-tile.onb { --accent: #2bb59a; }
+.s-tile.ais { --accent: #1e9bd7; }
 .s-cap {
   align-self: stretch;
   display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 6px 16px;
